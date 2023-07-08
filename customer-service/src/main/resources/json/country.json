@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "name": "Nigeria",
+    "code": "NGN",
+    "phoneCode": "234"
+  },
+  {
+    "id": 2,
+    "name": "Ghana",
+    "code": "GHA",
+    "phoneCode": "233"
+  }
+]
