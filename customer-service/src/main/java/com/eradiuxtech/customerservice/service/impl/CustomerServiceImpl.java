@@ -4,13 +4,16 @@ package com.eradiuxtech.customerservice.service.impl;
 import com.eradiuxtech.customerservice.convertor.CustomerMapper;
 import com.eradiuxtech.customerservice.dto.request.ChangeStatusRequest;
 import com.eradiuxtech.customerservice.dto.request.CreateCustomerRequest;
+import com.eradiuxtech.customerservice.dto.response.CustomerResponseDto;
 import com.eradiuxtech.customerservice.entity.Customer;
 import com.eradiuxtech.customerservice.entity.shared.KeycloakUser;
 import com.eradiuxtech.customerservice.repository.CustomerRepository;
 import com.eradiuxtech.customerservice.service.CustomerService;
 import com.eradiuxtech.customerservice.util.Status;
 import jakarta.ws.rs.BadRequestException;
+import jakarta.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -31,6 +34,8 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
 
     private final WebClient webClient;
+
+    private  final ModelMapper modelMapper;
 
     private static final String USER_BASE_URL = "http://USER-SERVICE:9000/api/v1/users";
     @Override
@@ -56,6 +61,26 @@ public class CustomerServiceImpl implements CustomerService {
             throw new BadRequestException(e.getMessage());
         }
     }
+
+
+    public CustomerResponseDto findCustomer(Long id){
+        LOGGER.info("CustomerServiceImpl | findCustomer | started");
+
+        try{
+            Optional<Customer> customer = this.customerRepository.findById(id);
+            if(customer.isEmpty()){
+                throw new NotFoundException("Customer Not Found");
+            }
+            LOGGER.info("CustomerServiceImpl | findCustomer | success");
+            return this.modelMapper.map(customer, CustomerResponseDto.class);
+
+        }catch (Exception e){
+            LOGGER.info("CustomerServiceImpl | changeStatus | error");
+            throw new BadRequestException(e.getMessage());
+        }
+    }
+
+
         public String changeStatus(Long id, Status type, ChangeStatusRequest changeStatusRequest) {
 
             try {

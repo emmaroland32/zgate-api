@@ -2,6 +2,7 @@ package com.eradiuxtech.customerservice.controller;
 
 import com.eradiuxtech.customerservice.dto.request.ChangeStatusRequest;
 import com.eradiuxtech.customerservice.dto.request.CreateCustomerRequest;
+import com.eradiuxtech.customerservice.dto.response.CustomerResponseDto;
 import com.eradiuxtech.customerservice.service.CustomerService;
 import com.eradiuxtech.customerservice.util.Status;
 import jakarta.validation.Valid;
@@ -36,14 +37,14 @@ public class CustomerController {
         return new ResponseEntity<String>(customer, HttpStatus.OK);
     }
 
-    @PostMapping("/{id}/review")
+    @PutMapping("/{id}/review")
     public ResponseEntity<String> reviewCustomer(@Valid @RequestBody ChangeStatusRequest changeStatusRequest, @PathVariable Long id){
         LOGGER.info("CustomerController | reviewCustomer started");
       String response = customerService.changeStatus(id, Status.REVIEWED, changeStatusRequest);
         return new ResponseEntity<String>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/{id}/approve")
+    @PutMapping("/{id}/approve")
     public ResponseEntity<String> approveCustomer(@Valid @RequestBody ChangeStatusRequest changeStatusRequest, @PathVariable Long id){
         LOGGER.info("CustomerController | approveCustomer | started");
         String response = customerService.changeStatus(id, Status.APPROVED, changeStatusRequest);
@@ -51,11 +52,18 @@ public class CustomerController {
         return new ResponseEntity<String>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/{id}/reject")
+    @PutMapping("/{id}/reject")
     public ResponseEntity<String> rejectCustomer(@Valid @RequestBody ChangeStatusRequest changeStatusRequest, @PathVariable Long id){
         LOGGER.info("CustomerController | rejectCustomer | started");
         String response = customerService.changeStatus(id, Status.REJECTED, changeStatusRequest);
         LOGGER.info("CustomerController | rejectCustomer | success");
         return new ResponseEntity<String>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CustomerResponseDto> getCustomer(@PathVariable Long id){
+        LOGGER.info("CustomerController | reviewCustomer started");
+        CustomerResponseDto response = customerService.findCustomer(id);
+        return new ResponseEntity<CustomerResponseDto>(response, HttpStatus.OK);
     }
 }
