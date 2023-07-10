@@ -1,10 +1,13 @@
 package com.eradiuxtech.customerservice.service.impl;
 
 
+import com.eradiuxtech.customerservice.convertor.ApprovalMapper;
 import com.eradiuxtech.customerservice.convertor.CustomerMapper;
+import com.eradiuxtech.customerservice.convertor.Paginator;
 import com.eradiuxtech.customerservice.dto.request.ChangeStatusRequest;
 import com.eradiuxtech.customerservice.dto.request.CreateCustomerRequest;
 import com.eradiuxtech.customerservice.dto.response.CustomerResponseDto;
+import com.eradiuxtech.customerservice.dto.response.ListCustomerResponseDto;
 import com.eradiuxtech.customerservice.entity.Customer;
 import com.eradiuxtech.customerservice.entity.shared.KeycloakUser;
 import com.eradiuxtech.customerservice.repository.CustomerRepository;
@@ -16,13 +19,17 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,10 +42,39 @@ public class CustomerServiceImpl implements CustomerService {
 
     private final WebClient webClient;
 
-    private  final ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     private static final String USER_BASE_URL = "http://USER-SERVICE:9000/api/v1/users";
-    @Override
+
+
+    public Map<String, Object> listWithPagination(int page, int size, String[] sort) {
+        LOGGER.info("CountryController | listWithPagination | Started");
+
+        try {
+            List<Sort.Order> orders = new ArrayList<Sort.Order>();
+
+
+            if (size > 10) {
+                size = 10;
+            }
+
+            Pageable pagingSort = PageRequest.of(page, size, Sort.by(orders));
+            Page<Customer> pageCustomers = customerRepository.findAll(pagingSort);
+            List<Customer> customers = pageCustomers.getContent();
+
+            Map<String, Object> response =  Paginator.paginateCustomer(pageCustomers);
+            response.put("data", customers);
+
+
+            LOGGER.info("CountryController | listWithPagination | Success");
+            return response;
+        } catch (Exception e) {
+            LOGGER.info("CountryController | listWithPagination | Error");
+            throw new BadRequestException(e.getMessage());
+        }
+
+    }
+
     public String createCustomer(CreateCustomerRequest createCustomerRequest) {
 
         String prefix = "M";
@@ -63,148 +99,43 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
 
-    public CustomerResponseDto findCustomer(Long id){
+    public CustomerResponseDto findCustomer(Long id) {
         LOGGER.info("CustomerServiceImpl | findCustomer | started");
 
-        try{
+        try {
             Optional<Customer> customer = this.customerRepository.findById(id);
-            if(customer.isEmpty()){
+            if (customer.isEmpty()) {
                 throw new NotFoundException("Customer Not Found");
             }
             LOGGER.info("CustomerServiceImpl | findCustomer | success");
             return this.modelMapper.map(customer, CustomerResponseDto.class);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             LOGGER.info("CustomerServiceImpl | changeStatus | error");
             throw new BadRequestException(e.getMessage());
         }
     }
 
 
-        public String changeStatus(Long id, Status type, ChangeStatusRequest changeStatusRequest) {
-
-            try {
-                Optional<Customer> customer = customerRepository.findById(id);
-                if(customer.isEmpty()){
-                    throw new BadRequestException("Customer does not exist");
-                }
-
-                Customer _customer = customer.get();
-                KeycloakUser _user = getAuthUserInfo();
-
-
-                switch (type){
-                    case REVIEW:
-                        if(!_customer.getForReview()){
-                            throw new BadRequestException("unavailable for review");
-                        }
-                        if(_customer.getIsReviewed()){
-                            throw new BadRequestException("Already reviewed");
-                        }
-                        if(_customer.getIsApproved()){
-                            throw new BadRequestException(("Already approved"));
-                        }
-                        if(Objects.equals(_customer.getCreatedBy(), _user.getUsername())){
-                            throw new BadRequestException("Cannot review an entity created by you");
-                        }
-                        _customer.setReviewNote(changeStatusRequest.getNote());
-                        _customer.setReviewedAt(LocalDateTime.now());
-                        _customer.setStatus(Status.REVIEWED);
-                        _customer.setReviewedBy(_user.getUsername());
-                        _customer.setForApproval(true);
-
-                    case APPROVAL:
-                        if(!_customer.getForApproval()){
-                            throw new BadRequestException("Unavailable for approval");
-                        }
-                        if(!_customer.getIsReviewed()){
-                            throw new BadRequestException("Entity has not been reviewed");
-                        }
-                        if(_customer.getIsApproved()){
-                            throw new BadRequestException(("Already approved"));
-                        }
-                        if(Objects.equals(_customer.getCreatedBy(), _user.getUsername())
-                                || Objects.equals(_customer.getReviewedBy(), _user.getUsername())){
-                            throw new BadRequestException("Cannot approve an Entity created by you");
-                        }
-                        _customer.setReviewNote(changeStatusRequest.getNote());
-                        _customer.setReviewedAt(LocalDateTime.now());
-                        _customer.setStatus(Status.APPROVED);
-                        _customer.setReviewedBy(_user.getUsername());
-
-                    case REJECTED:
-                        if(!_customer.getForReview() ||  !_customer.getForApproval()){
-                            throw new BadRequestException("Unavailable for rejection");
-                        }
-                        if(Objects.equals(_customer.getCreatedBy(), _user.getUsername())
-                                || Objects.equals(_customer.getReviewedBy(), _user.getUsername())){
-                            throw new BadRequestException("Cannot reject an Entity created by you");
-                        }
-                        if(_customer.getIsReviewed() && !_customer.getIsApproved()){
-                            _customer.setStatus(Status.REVIEWED);
-                            _customer.setRejectionStage(Status.APPROVAL);
-                        }
-                        if(!_customer.getIsReviewed() && !_customer.getIsApproved()){
-                            _customer.setStatus(Status.PENDING);
-                            _customer.setRejectionStage(Status.REVIEW);
-                        }
-                        _customer.setRejectionNote(changeStatusRequest.getNote());
-                        _customer.setRejectedBy(_user.getUsername());
-                        _customer.setRejectedAt(LocalDateTime.now());
-                }
-
-                customerRepository.save(_customer);
-                LOGGER.info("CustomerServiceImpl | changeStatus | success");
-                return "Successfully" + type;
-            } catch (Exception e){
-                LOGGER.info("CustomerServiceImpl | changeStatus | error");
-                throw new BadRequestException(e.getMessage());
-            }
-
-
-        }
-
-
-    private String pushForReview(Long id){
-
-        LOGGER.info("CustomerServiceImpl | pushForReview | started");
+    public String approvalWorkflow(Long id, Status type, ChangeStatusRequest changeStatusRequest) {
 
         try {
             Optional<Customer> customer = customerRepository.findById(id);
             if (customer.isEmpty()) {
-                throw new BadRequestException("Entity does not exist");
+                throw new BadRequestException("Customer does not exist");
             }
 
-            Customer _customer = customer.get();
-            KeycloakUser _user = getAuthUserInfo();
+            Customer _customer = new ApprovalMapper().customerWorkFlow(type, changeStatusRequest, customer.get());
 
-            _customer.setForReview(true);
             customerRepository.save(_customer);
-            LOGGER.info("CustomerServiceImpl | pushForReview | success");
-            return "Entity pushed for review";
-
-        } catch (Exception e){
-            LOGGER.info("CustomerServiceImpl | pushForReview | error");
+            LOGGER.info("CustomerServiceImpl | changeStatus | success");
+            return _customer.getStatus() + " Successfully";
+        } catch (Exception e) {
+            LOGGER.info("CustomerServiceImpl | changeStatus | error");
             throw new BadRequestException(e.getMessage());
         }
 
 
-    }
-
-    private KeycloakUser getAuthUserInfo(){
-
-        LOGGER.info("CustomerServiceImpl | getAuthUserInfo started");
-
-        KeycloakUser user = webClient.get().uri(USER_BASE_URL + "/me"
-                                                                        ).retrieve()
-                                                              .bodyToMono(KeycloakUser.class)
-                                                              .block();
-
-        assert user != null;
-
-        LOGGER.info("CustomerServiceImpl | getAuthUserInfo | user result : " + user);
-
-        return user;
     }
 }
 

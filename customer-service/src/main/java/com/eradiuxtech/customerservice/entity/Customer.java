@@ -2,10 +2,7 @@ package com.eradiuxtech.customerservice.entity;
 
 
 import com.eradiuxtech.customerservice.entity.core.Review;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
