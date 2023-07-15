@@ -7,10 +7,10 @@ import com.eradiuxtech.customerservice.convertor.Paginator;
 import com.eradiuxtech.customerservice.dto.request.ChangeStatusRequest;
 import com.eradiuxtech.customerservice.dto.request.CreateCustomerRequest;
 import com.eradiuxtech.customerservice.dto.response.CustomerResponseDto;
-import com.eradiuxtech.customerservice.dto.response.ListCustomerResponseDto;
 import com.eradiuxtech.customerservice.entity.Customer;
-import com.eradiuxtech.customerservice.entity.shared.KeycloakUser;
-import com.eradiuxtech.customerservice.repository.CustomerRepository;
+import com.eradiuxtech.customerservice.entity.CustomerType;
+import com.eradiuxtech.customerservice.repository.write.CustomerTypeRepository;
+import com.eradiuxtech.customerservice.repository.write.CustomerRepository;
 import com.eradiuxtech.customerservice.service.CustomerService;
 import com.eradiuxtech.customerservice.util.Status;
 import jakarta.ws.rs.BadRequestException;
@@ -27,9 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +37,8 @@ public class CustomerServiceImpl implements CustomerService {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     private final CustomerRepository customerRepository;
+
+    private final CustomerTypeRepository customerTypeRepository;
 
     private final WebClient webClient;
 
@@ -76,19 +76,17 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     public String createCustomer(CreateCustomerRequest createCustomerRequest) {
-
-        String prefix = "M";
-        String suffix = "";
-
-        long customerCount = customerRepository.count();
-
+        LOGGER.info("CustomerServiceImpl | createCustomer | Started");
         try {
+            Optional<CustomerType> customerType = customerTypeRepository.findById(createCustomerRequest.getCustomerType().getId());
+            if (customerType.isEmpty()) {
+                throw new NotFoundException("Customer Type Not Found");
+            }
+
             Customer createCustomer = CustomerMapper.createCustomer(createCustomerRequest);
-            createCustomer.setUcid(customerCount + 1);
-            suffix = String.format("%08d", customerCount + 1);
-            createCustomer.setLoginId(prefix + suffix);
-            createCustomer.setStatus(Status.PENDING);
+            createCustomer.setCustomerType(createCustomerRequest.getCustomerType());
             customerRepository.save(createCustomer);
+
 
             LOGGER.info("CustomerServiceImpl | createCustomer success");
             return "Customer Created Successfully, Awaiting Review";

@@ -2,8 +2,8 @@ package com.eradiuxtech.customerservice.controller.shared;
 
 import com.eradiuxtech.customerservice.dto.request.CreateStateRequestDto;
 import com.eradiuxtech.customerservice.dto.request.UpdateStateRequestDto;
-import com.eradiuxtech.customerservice.entity.shared.Country;
-import com.eradiuxtech.customerservice.entity.shared.State;
+import com.eradiuxtech.customerservice.entity.Country;
+import com.eradiuxtech.customerservice.entity.State;
 import com.eradiuxtech.customerservice.repository.shared.CountryRepository;
 import com.eradiuxtech.customerservice.repository.shared.StateRepository;
 import jakarta.validation.Valid;

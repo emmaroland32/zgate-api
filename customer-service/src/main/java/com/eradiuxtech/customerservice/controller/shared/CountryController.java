@@ -2,7 +2,7 @@ package com.eradiuxtech.customerservice.controller.shared;
 
 import com.eradiuxtech.customerservice.dto.request.CreateCountryRequestDto;
 import com.eradiuxtech.customerservice.dto.request.UpdateCountryRequestDto;
-import com.eradiuxtech.customerservice.entity.shared.Country;
+import com.eradiuxtech.customerservice.entity.Country;
 import com.eradiuxtech.customerservice.repository.shared.CountryRepository;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.BadRequestException;

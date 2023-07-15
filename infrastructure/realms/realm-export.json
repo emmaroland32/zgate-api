@@ -1,11 +1,11 @@
 {
-  "id": "spring-boot-microservices-realm",
-  "realm": "spring-boot-microservices-realm",
+  "id": "zgate",
+  "realm": "zgate",
   "notBefore": 0,
   "defaultSignatureAlgorithm": "RS256",
   "revokeRefreshToken": false,
   "refreshTokenMaxReuse": 0,
-  "accessTokenLifespan": 300,
+  "accessTokenLifespan": 1800,
   "accessTokenLifespanForImplicitFlow": 900,
   "ssoSessionIdleTimeout": 1800,
   "ssoSessionMaxLifespan": 36000,
@@ -45,11 +45,11 @@
   "failureFactor": 30,
   "defaultRole": {
     "id": "22cc1145-79bb-4479-9a9a-f736cf9c1dea",
-    "name": "default-roles-spring-boot-microservices-realm",
+    "name": "default-roles-zgate",
     "description": "${role_default-roles}",
     "composite": true,
     "clientRole": false,
-    "containerId": "spring-boot-microservices-realm"
+    "containerId": "zgate"
   },
   "requiredCredentials": [
     "password"
@@ -92,11 +92,11 @@
     {
       "id": "eeb3f34b-4ccd-44c0-9250-a76afec62961",
       "createdTimestamp": 1651438240319,
-      "username": "service-account-spring-cloud-client",
+      "username": "service-account-zgate-client",
       "enabled": true,
       "totp": false,
       "emailVerified": false,
-      "serviceAccountClientId": "spring-cloud-client",
+      "serviceAccountClientId": "zgate-client",
       "disableableCredentialTypes": [],
       "requiredActions": [],
       "notBefore": 0
@@ -126,13 +126,13 @@
       "clientId": "account",
       "name": "${client_account}",
       "rootUrl": "${authBaseUrl}",
-      "baseUrl": "/realms/spring-boot-microservices-realm/account/",
+      "baseUrl": "/realms/zgate/account/",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "/realms/spring-boot-microservices-realm/account/*"
+        "/realms/zgate/account/*"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -168,13 +168,13 @@
       "clientId": "account-console",
       "name": "${client_account-console}",
       "rootUrl": "${authBaseUrl}",
-      "baseUrl": "/realms/spring-boot-microservices-realm/account/",
+      "baseUrl": "/realms/zgate/account/",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "/realms/spring-boot-microservices-realm/account/*"
+        "/realms/zgate/account/*"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -336,13 +336,13 @@
       "clientId": "security-admin-console",
       "name": "${client_security-admin-console}",
       "rootUrl": "${authAdminUrl}",
-      "baseUrl": "/admin/spring-boot-microservices-realm/console/",
+      "baseUrl": "/admin/zgate/console/",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "/admin/spring-boot-microservices-realm/console/*"
+        "/admin/zgate/console/*"
       ],
       "webOrigins": [
         "+"
@@ -396,7 +396,7 @@
     },
     {
       "id": "97c3b790-0cfc-4c78-8ed7-c31ab23f9b56",
-      "clientId": "spring-cloud-client",
+      "clientId": "zgate-client",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
@@ -407,9 +407,9 @@
       "notBefore": 0,
       "bearerOnly": false,
       "consentRequired": false,
-      "standardFlowEnabled": false,
-      "implicitFlowEnabled": false,
-      "directAccessGrantsEnabled": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
       "serviceAccountsEnabled": true,
       "publicClient": false,
       "frontchannelLogout": false,

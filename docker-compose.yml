@@ -1,52 +1,142 @@
 ---
 version: '3.7'
 services:
-  ## MySQL Docker Compose Config
 
-  ## ORDER-SERVICE POSTGRES Docker Compose Config
-  postgres-order:
-    container_name: postgres-order
-    image: postgres:latest
-    environment:
-      POSTGRES_DB: order-service
-      POSTGRES_USER: ptechie
-      POSTGRES_PASSWORD: password
-      PGDATA: /data/postgres
-    volumes:
-      - ./infrastructure/postgres-order:/data/postgres
-    expose:
-      - "5431"
-    ports:
-      - "5431:5431"
-    command: -p 5431
-    restart: always
+#  # Eureka Server
+#  discovery-server:
+#    build: ./discovery-server
+#    #    image: zgate-api/discovery-server:latest
+#    container_name: discovery-server
+#    ports:
+#      - "8761:8761"
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#    depends_on:
+#      - zipkin
 
-  ## INVENTORY-SERVICE POSTGRES Docker Compose Config
-  postgres-inventory:
-    container_name: postgres-inventory
-    image: postgres:latest
-    environment:
-      POSTGRES_DB: inventory-service
-      POSTGRES_USER: ptechie
-      POSTGRES_PASSWORD: password
-      PGDATA: /data/postgres
-    volumes:
-      - ./infrastructure/postgres-inventory:/data/postgres
-    ports:
-      - "5432:5432"
-    restart: always
 
-  ## Mongo Docker Compose Config
-  mongo:
-    container_name: mongo
-    image: mongo:4.4.14-rc0-focal
-    restart: always
-    ports:
-      - "27017:27017"
-    expose:
-      - "27017"
-    volumes:
-      - ./infrastructure/mongo-data:/data/db
+#  api-gateway:
+#    #    image: zgate-api/api-gateway:latest
+#    build: ./api-gateway
+#    container_name: api-gateway
+#    ports:
+#      - "8181:8080"
+#    expose:
+#      - "8181"
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY= TRACE
+#    depends_on:
+#      - zipkin
+#      - discovery-server
+#      - keycloak
+
+  #  ## USER-Service Docker Compose Config
+#  user-service:
+#    container_name: user-service
+#    build: ./user-service
+##    image: zgate-api/user-service:latest
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-user:5431/user-service
+#    depends_on:
+#      - postgres-user
+#      - broker
+#      - zipkin
+#      - discovery-server
+#      - api-gateway
+#
+#    ## Customer-Service Docker Compose Config
+#  customer-service:
+#    container_name: customer-service
+#    build: ./customer-service
+##    image: zgate-api/customer-service:latest
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-customer:5431/customer-service
+#    depends_on:
+#      - postgres-customer
+#      - broker
+#      - zipkin
+#      - discovery-server
+#      - api-gateway
+#
+#    ## Portfolio-Service Docker Compose Config
+#  portfolio-service:
+#    container_name: portfolio-service
+#    build: ./portfolio-service
+##    image: zgate-api/portfolio-service:latest
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-portfolio:5432/portfolio-service
+#    depends_on:
+#      - postgres-portfolio
+#      - discovery-server
+#      - api-gateway
+#      - zipkin
+#
+#    ## Notification-Service Docker Compose Config
+#  notification-service:
+#    container_name: notification-service
+#    build: ./notification-service
+##    image: zgate-api/notification-service:latest
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#    depends_on:
+#      - zipkin
+#      - broker
+#      - discovery-server
+#      - api-gateway
+#
+#  ## POSTGRESS Docker Compose Config
+#
+#  ## USER-SERVICE POSTGRES Docker Compose Config
+#  postgres-user:
+#    container_name: postgres-user
+#    image: postgres:latest
+#    environment:
+#      POSTGRES_DB: user-service
+#      POSTGRES_USER: zgate
+#      POSTGRES_PASSWORD: password
+#      PGDATA: /data/postgres
+#    volumes:
+#      - ./infrastructure/postgres-user:/data/postgres
+#    expose:
+#      - "5432"
+#    ports:
+#      - "5432:5432"
+#    command: -p 5432
+#    restart: always
+#
+#  ## CUSTOMER-SERVICE POSTGRES Docker Compose Config
+#  postgres-customer:
+#    container_name: postgres-customer
+#    image: postgres:latest
+#    environment:
+#      POSTGRES_DB: customer-service
+#      POSTGRES_USER: zgate
+#      POSTGRES_PASSWORD: password
+#      PGDATA: /data/postgres
+#    volumes:
+#      - ./infrastructure/postgres-customer:/data/postgres
+#    ports:
+#      - "5433:5433"
+#    restart: always
+#
+#  ## PORTFOLIO-SERVICE POSTGRES Docker Compose Config
+#  postgres-portfolio:
+#    container_name: postgres-portfolio
+#    image: postgres:latest
+#    environment:
+#      POSTGRES_DB: portfolio-service
+#      POSTGRES_USER: zgate
+#      POSTGRES_PASSWORD: password
+#      PGDATA: /data/postgres
+#    volumes:
+#      - ./infrastructure/postgres-customer:/data/postgres
+#    ports:
+#      - "5434:5434"
+#    restart: always
 
   ## Keycloak Config with Mysql database
   keycloak-mysql:
@@ -113,80 +203,8 @@ services:
     ports:
       - "9411:9411"
 
-  ## Eureka Server
-#  discovery-server:
-#    image: zgate-api/discovery-server:latest
-#    container_name: discovery-server
-#    ports:
-#      - "8761:8761"
-#    environment:
-#      - SPRING_PROFILES_ACTIVE=docker
-#    depends_on:
-#      - zipkin
 
-#  api-gateway:
-#    image: zgate-api/api-gateway:latest
-#    container_name: api-gateway
-#    ports:
-#      - "8181:8080"
-#    expose:
-#      - "8181"
-#    environment:
-#      - SPRING_PROFILES_ACTIVE=docker
-#      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY= TRACE
-#    depends_on:
-#      - zipkin
-#      - discovery-server
-#      - keycloak
-#
-#  ## Product-Service Docker Compose Config
-#  product-service:
-#    container_name: product-service
-#    image: zgate-api/product-service:latest
-#    environment:
-#      - SPRING_PROFILES_ACTIVE=docker
-#    depends_on:
-#      - mongo
-#      - discovery-server
-#      - api-gateway
-#
-#  ## Order-Service Docker Compose Config
-#  order-service:
-#    container_name: order-service
-#    image: zgate-api/order-service:latest
-#    environment:
-#      - SPRING_PROFILES_ACTIVE=docker
-#      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-order:5431/order-service
-#    depends_on:
-#      - postgres-order
-#      - broker
-#      - zipkin
-#      - discovery-server
-#      - api-gateway
-#
-#  ## Inventory-Service Docker Compose Config
-#  inventory-service:
-#    container_name: inventory-service
-#    image: zgate-api/inventory-service:latest
-#    environment:
-#      - SPRING_PROFILES_ACTIVE=docker
-#      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-inventory:5432/inventory-service
-#    depends_on:
-#      - postgres-inventory
-#      - discovery-server
-#      - api-gateway
-#
-#  ## Notification-Service Docker Compose Config
-#  notification-service:
-#    container_name: notification-service
-#    image: zgate-api/notification-service:latest
-#    environment:
-#      - SPRING_PROFILES_ACTIVE=docker
-#    depends_on:
-#      - zipkin
-#      - broker
-#      - discovery-server
-#      - api-gateway
+
 
   ## Prometheus
   prometheus:
@@ -198,9 +216,9 @@ services:
     volumes:
       - ./infrastructure/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
 #    depends_on:
-#      - product-service
-#      - inventory-service
-#      - order-service
+#      - customer-service
+#      - user-service
+#      - portfolio-service
 #      - notification-service
 
   grafana:

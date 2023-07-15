@@ -6,6 +6,7 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -29,8 +30,9 @@ public class Auditable {
     @CreatedDate
     @Column(name = "created_at",
             nullable = false,
-            updatable = false,
-            columnDefinition="TIMESTAMP default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP")
+            updatable = false
+           )
+    @ColumnDefault("CURRENT_TIMESTAMP")
     protected Date createdAt;
 
     @LastModifiedDate

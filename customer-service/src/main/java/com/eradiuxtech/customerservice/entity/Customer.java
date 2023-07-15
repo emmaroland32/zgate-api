@@ -2,14 +2,17 @@ package com.eradiuxtech.customerservice.entity;
 
 
 import com.eradiuxtech.customerservice.entity.core.Review;
+import com.eradiuxtech.customerservice.util.Status;
 import jakarta.persistence.*;
 import lombok.*;
+import org.glassfish.jersey.internal.util.Producer;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.ParamDef;
 import org.hibernate.annotations.SQLDelete;
 
 import java.io.Serializable;
+import java.util.List;
 
 
 @Entity
@@ -23,36 +26,45 @@ import java.io.Serializable;
 @Filter(name = "deletedCustomerFilter", condition = "deleted = :isDeleted")
 @FilterDef(name = "deletedCustomerFilter", parameters = @ParamDef(name = "isDeleted", type = org.hibernate.type.descriptor.java.BooleanJavaType.class))
 public class Customer extends Review implements Serializable {
-
-    @Column(name = "first_name", nullable = false)
-    protected String firstName;
-
-    @Column(name = "last_name", nullable = false)
-    protected String lastName;
-
-    @Column(name = "email", nullable = false, unique = true)
-    protected String email;
-
-    @Column(name = "username", nullable = false, unique = true)
-    protected String username;
-
     @Column(name = "ucid", updatable = false, nullable = false, unique = true)
-    protected Long ucid;
+    private Long ucid;
 
-    @Column(name = "login_id", updatable = false, nullable = false, unique = true, length = 10)
-    protected String loginId;
+    @OneToOne( targetEntity = CustomerType.class)
+    @JoinColumn( referencedColumnName = "id")
+    private CustomerType customerType;
 
-    @Column(name = "note")
-    protected String note;
+    @OneToOne(targetEntity = IndividualCustomerProperty.class)
+    @JoinColumn( referencedColumnName = "id")
+    private IndividualCustomerProperty individualCustomerProperty;
+
+    @OneToOne(targetEntity = JointCustomerProperty.class)
+    @JoinColumn( referencedColumnName = "id")
+    private JointCustomerProperty jointCustomerProperty;
+
+    @OneToOne(targetEntity = CorporateCustomerProperty.class)
+    @JoinColumn( referencedColumnName = "id")
+    private CorporateCustomerProperty corporateCustomerProperty;
+
+    @OneToOne(targetEntity = RelationshipManager.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn( referencedColumnName = "id")
+    private RelationshipManager relationshipManager;
+
+    @OneToMany(targetEntity = Address.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn( referencedColumnName = "id")
+    private List<Address> addresses;
+
+    @OneToMany(targetEntity = Phone.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(referencedColumnName = "id")
+    private List<Phone> phones;
+
+    @OneToMany(targetEntity = NextOfKin.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn( referencedColumnName = "id")
+    private List<NextOfKin> nextOfKins;
 
     @PrePersist
-    private void PrePersist() {
-        username = username.toLowerCase();
-        email = email.toLowerCase();
-        loginId = loginId.toUpperCase();
-        if(note == null){
-            note = "Customer Created by " + createdBy + " at " + createdAt;
-        }
+    public void prePersist() {
+        this.setUcid(this.getId());
+        this.setStatus(Status.PENDING);
     }
 
 }

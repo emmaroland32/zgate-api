@@ -1,10 +1,7 @@
 package com.eradiuxtech.customerservice.repository.shared;
 
-import com.eradiuxtech.customerservice.dto.request.CreateCountryRequestDto;
-import com.eradiuxtech.customerservice.dto.request.UpdateCountryRequestDto;
-import com.eradiuxtech.customerservice.entity.shared.Country;
+import com.eradiuxtech.customerservice.entity.Country;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 

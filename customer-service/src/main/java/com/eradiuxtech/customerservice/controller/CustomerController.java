@@ -3,7 +3,6 @@ package com.eradiuxtech.customerservice.controller;
 import com.eradiuxtech.customerservice.dto.request.ChangeStatusRequest;
 import com.eradiuxtech.customerservice.dto.request.CreateCustomerRequest;
 import com.eradiuxtech.customerservice.dto.response.CustomerResponseDto;
-import com.eradiuxtech.customerservice.entity.shared.Country;
 import com.eradiuxtech.customerservice.service.CustomerService;
 import com.eradiuxtech.customerservice.util.Status;
 import jakarta.validation.Valid;
@@ -11,17 +10,10 @@ import jakarta.ws.rs.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -58,7 +50,7 @@ public class CustomerController {
         LOGGER.info("CustomerController | health | started");
         return ResponseEntity.ok("Customer Service is up and running");
     }
-    @PostMapping("/create")
+    @PostMapping("/create-customer")
     public ResponseEntity<String> createCustomer(@Valid @RequestBody CreateCustomerRequest createCustomerRequest){
 
         LOGGER.info("CustomerController | createCustomer | started");

@@ -1,7 +1,7 @@
 package com.eradiuxtech.customerservice.repository.shared;
 
-import com.eradiuxtech.customerservice.entity.shared.City;
-import com.eradiuxtech.customerservice.entity.shared.Country;
+import com.eradiuxtech.customerservice.entity.City;
+import com.eradiuxtech.customerservice.entity.Country;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
