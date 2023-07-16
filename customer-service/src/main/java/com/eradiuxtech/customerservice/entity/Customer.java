@@ -29,35 +29,32 @@ public class Customer extends Review implements Serializable {
     @Column(name = "ucid", updatable = false, nullable = false, unique = true)
     private Long ucid;
 
-    @OneToOne( targetEntity = CustomerType.class)
+    @OneToOne( targetEntity = CustomerType.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn( referencedColumnName = "id")
     private CustomerType customerType;
 
-    @OneToOne(targetEntity = IndividualCustomerProperty.class)
-    @JoinColumn( referencedColumnName = "id")
+    @OneToOne(mappedBy = "customer")
     private IndividualCustomerProperty individualCustomerProperty;
 
-    @OneToOne(targetEntity = JointCustomerProperty.class)
-    @JoinColumn( referencedColumnName = "id")
+    @OneToOne(mappedBy = "customer", fetch = FetchType.EAGER)
     private JointCustomerProperty jointCustomerProperty;
 
-    @OneToOne(targetEntity = CorporateCustomerProperty.class)
-    @JoinColumn( referencedColumnName = "id")
+    @OneToOne(mappedBy = "customer", fetch = FetchType.EAGER)
     private CorporateCustomerProperty corporateCustomerProperty;
 
-    @OneToOne(targetEntity = RelationshipManager.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(targetEntity = RelationshipManager.class, fetch = FetchType.EAGER ,cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn( referencedColumnName = "id")
     private RelationshipManager relationshipManager;
 
-    @OneToMany(targetEntity = Address.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(targetEntity = Address.class, fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn( referencedColumnName = "id")
     private List<Address> addresses;
 
-    @OneToMany(targetEntity = Phone.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(targetEntity = Phone.class,fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(referencedColumnName = "id")
     private List<Phone> phones;
 
-    @OneToMany(targetEntity = NextOfKin.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(targetEntity = NextOfKin.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn( referencedColumnName = "id")
     private List<NextOfKin> nextOfKins;
 

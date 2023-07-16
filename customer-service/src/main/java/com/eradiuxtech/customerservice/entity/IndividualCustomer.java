@@ -38,7 +38,7 @@ public class IndividualCustomer extends CoreEntity implements Serializable {
     @Column(name = "login_id", updatable = false, nullable = false, unique = true, length = 10)
     private String loginId;
 
-    @ManyToOne(targetEntity = IndividualCustomerProperty.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(targetEntity = IndividualCustomerProperty.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "id", nullable = false)
     private IndividualCustomerProperty individualCustomerProperty;
 

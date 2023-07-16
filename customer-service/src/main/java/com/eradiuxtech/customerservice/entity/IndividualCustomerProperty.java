@@ -18,9 +18,10 @@ import java.util.List;
 @NoArgsConstructor
 public class IndividualCustomerProperty extends CoreEntity {
 
-    @OneToOne(mappedBy = "individualCustomerProperty", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(targetEntity = Customer.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn( referencedColumnName = "id", nullable = false)
     private Customer customer;
 
-    @OneToMany(mappedBy = "individualCustomerProperty", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<IndividualCustomer> individualCustomers;
+    @OneToOne(mappedBy = "individualCustomerProperty", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private IndividualCustomer individualCustomer;
 }

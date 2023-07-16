@@ -19,11 +19,8 @@ import java.util.List;
 @NoArgsConstructor
 public class JointCustomer extends CoreEntity implements Serializable {
 
-    @Column(name = "joint_name", unique = true)
-    String jointName;
-
-    @Column(name = "joint_count", nullable = false)
-    Long jointCount;
+    @Column(name = "joint_id", nullable = false)
+    Long jointId;
 
     @Column(name = "login_id", nullable = false)
     String loginId;
@@ -41,7 +38,7 @@ public class JointCustomer extends CoreEntity implements Serializable {
 
         String prefix = "JT";
         String suffix = "";
-        if (this.jointCount != null) {
+        if (this.jointId != null) {
             suffix = String.format("%07d", id);
             loginId = prefix + suffix;
             loginId.toUpperCase();

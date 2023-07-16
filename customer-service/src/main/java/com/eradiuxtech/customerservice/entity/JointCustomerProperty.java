@@ -18,13 +18,17 @@ import java.util.List;
 @NoArgsConstructor
 public class JointCustomerProperty extends CoreEntity {
 
-    @Column(name = "joint_customer_count", nullable = false)
-    private Long joinCustomerCount;
+    @Column(name = "joint_account_name", unique = true)
+    String jointAccountName;
+
+    @Column(name = "customer_count", nullable = false)
+    private Long customerCount;
 
     @Column(name = "even_share", nullable = false, columnDefinition = "boolean default true")
     private Boolean evenShare;
 
-    @OneToOne(mappedBy = "jointCustomerProperty", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(targetEntity = Customer.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn( referencedColumnName = "id", nullable = false)
     private Customer customer;
 
     @OneToMany( mappedBy = "jointCustomerProperty", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

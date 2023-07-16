@@ -329,7 +329,7 @@ CREATE OR REPLACE VIEW individual_customer_view AS
 SELECT c.ucid, t.title, ic.first_name, ic.last_name, ic.email, ic.login_id, ic.username, c.created_at
 FROM customers as c
 JOIN individual_customer_properties as icp
-ON c.individual_customer_property_id = icp.id
+ON c.id = icp.customer_id
 JOIN individual_customers as ic
 ON icp.id = ic.individual_customer_property_id
 JOIN titles as t
@@ -341,7 +341,7 @@ CREATE OR REPLACE VIEW corporate_customer_view AS
 SELECT c.ucid, cc.company_name, cc.created_at
 FROM customers as c
 JOIN corporate_customer_properties as ccp
-ON c.corporate_customer_property_id = ccp.id
+ON c.id = ccp.customer_id
 JOIN corporate_customers as cc
 ON ccp.id = cc.corporate_customer_property_id
 WHERE customer_type_id = 2;
@@ -349,11 +349,11 @@ WHERE customer_type_id = 2;
 
 --Joint Customer View
 CREATE OR REPLACE VIEW joint_customer_view AS
-SELECT c.ucid, cc.joint_name, cc.created_at
+SELECT c.ucid, jcp.joint_account_name, cc.created_at
 FROM customers as c
-JOIN joint_customer_properties as ccp
-ON c.joint_customer_property_id = ccp.id
+JOIN joint_customer_properties as jcp
+ON c.id = jcp.customer_id
 JOIN joint_customers as cc
-ON ccp.id = cc.joint_customer_property_id
-WHERE customer_type_id = 2;
+ON jcp.id = cc.joint_customer_property_id
+WHERE customer_type_id = 3;
 

@@ -19,7 +19,7 @@ public class CorporateCustomer extends CoreEntity implements Serializable {
     @Column(name = "company_name", unique = true)
     String companyName;
 
-    @ManyToOne(targetEntity = CorporateCustomerProperty.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(targetEntity = CorporateCustomerProperty.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn( referencedColumnName = "id", nullable = false)
     private CorporateCustomerProperty corporateCustomerProperty;
 
