@@ -31,7 +31,7 @@ public class MinorGuardian extends CoreEntity implements Serializable {
     String email;
 
     @OneToOne(targetEntity = MinorGuardianProperty.class, cascade = CascadeType.ALL)
-    @JoinColumn( referencedColumnName = "ucid", name ="ucid" ,nullable = false)
+    @JoinColumn( referencedColumnName = "id", nullable = false)
     private MinorGuardianProperty minorGuardianProperty;
 
 }

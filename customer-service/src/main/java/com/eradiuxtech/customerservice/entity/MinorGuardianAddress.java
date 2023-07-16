@@ -17,7 +17,7 @@ import java.io.Serializable;
 public class MinorGuardianAddress extends CoreEntity implements Serializable {
 
     @ManyToOne(targetEntity = Customer.class)
-    @JoinColumn(referencedColumnName = "ucid", name = "ucid", nullable = false)
+    @JoinColumn(referencedColumnName = "id", nullable = false)
     MinorGuardian minorGuardian;
 
     @ManyToOne(targetEntity = AddressType.class)
