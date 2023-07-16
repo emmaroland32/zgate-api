@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -16,10 +17,10 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class IndividualCustomerProperty extends CoreEntity {
+public class IndividualCustomerProperty extends CoreEntity implements Serializable {
 
     @OneToOne(targetEntity = Customer.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn( referencedColumnName = "id", nullable = false)
+    @JoinColumn( referencedColumnName = "ucid", name = "ucid",nullable = false)
     private Customer customer;
 
     @OneToOne(mappedBy = "individualCustomerProperty", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

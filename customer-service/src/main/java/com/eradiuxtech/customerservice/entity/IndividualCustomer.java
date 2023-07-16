@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Entity
 @Table(name = "individual_customers")
@@ -18,7 +17,7 @@ public class IndividualCustomer extends CoreEntity implements Serializable {
 
     @ManyToOne(targetEntity = Title.class)
     @JoinColumn(referencedColumnName = "id")
-    Title title;
+    private Title title;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -39,7 +38,7 @@ public class IndividualCustomer extends CoreEntity implements Serializable {
     private String loginId;
 
     @OneToOne(targetEntity = IndividualCustomerProperty.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(referencedColumnName = "id", nullable = false)
+    @JoinColumn(referencedColumnName = "ucid", name = "ucid" ,nullable = false)
     private IndividualCustomerProperty individualCustomerProperty;
 
     @Column(name = "note")

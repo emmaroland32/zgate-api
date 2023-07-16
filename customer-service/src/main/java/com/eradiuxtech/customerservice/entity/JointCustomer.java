@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Entity
 @Table(name = "joint_customers")
@@ -28,8 +27,8 @@ public class JointCustomer extends CoreEntity implements Serializable {
     @Column(name = "share")
     Long share;
 
-    @ManyToOne(targetEntity = JointCustomerProperty.class)
-    @JoinColumn(referencedColumnName = "id")
+    @ManyToOne(targetEntity = JointCustomerProperty.class, optional = false)
+    @JoinColumn(referencedColumnName = "ucid", name = "ucid", nullable = false)
     JointCustomerProperty jointCustomerProperty;
 
     @PrePersist

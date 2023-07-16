@@ -7,13 +7,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.*;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "customer_types")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustomerType extends CoreEntity {
+public class CustomerType extends CoreEntity implements Serializable {
 
     @Column(name = "name", unique = true)
     String name;

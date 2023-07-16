@@ -10,13 +10,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "relationships")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Relationship extends CoreEntity {
+public class Relationship extends CoreEntity implements Serializable {
 
     @Column(name = "name", unique = true)
     String name;

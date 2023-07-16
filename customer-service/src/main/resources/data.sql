@@ -329,9 +329,9 @@ CREATE OR REPLACE VIEW individual_customer_view AS
 SELECT c.ucid, t.title, ic.first_name, ic.last_name, ic.email, ic.login_id, ic.username, c.created_at
 FROM customers as c
 JOIN individual_customer_properties as icp
-ON c.id = icp.customer_id
+ON c.id = icp.ucid
 JOIN individual_customers as ic
-ON icp.id = ic.individual_customer_property_id
+ON icp.id = ic.ucid
 JOIN titles as t
 ON ic.title_id = t.id
 WHERE customer_type_id = 1;
@@ -341,9 +341,9 @@ CREATE OR REPLACE VIEW corporate_customer_view AS
 SELECT c.ucid, cc.company_name, cc.created_at
 FROM customers as c
 JOIN corporate_customer_properties as ccp
-ON c.id = ccp.customer_id
+ON c.id = ccp.ucid
 JOIN corporate_customers as cc
-ON ccp.id = cc.corporate_customer_property_id
+ON ccp.id = cc.ucid
 WHERE customer_type_id = 2;
 
 
@@ -352,8 +352,18 @@ CREATE OR REPLACE VIEW joint_customer_view AS
 SELECT c.ucid, jcp.joint_account_name, cc.created_at
 FROM customers as c
 JOIN joint_customer_properties as jcp
-ON c.id = jcp.customer_id
+ON c.id = jcp.ucid
 JOIN joint_customers as cc
-ON jcp.id = cc.joint_customer_property_id
+ON jcp.id = cc.ucid
 WHERE customer_type_id = 3;
+
+--Minor Customer View
+CREATE OR REPLACE VIEW minor_customer_view AS
+SELECT c.ucid, cc.created_at
+FROM customers as c
+JOIN minor_customer_properties as mcp
+ON c.id = mcp.ucid
+JOIN minor_customers as cc
+ON mcp.id = cc.ucid
+WHERE customer_type_id = 4;
 

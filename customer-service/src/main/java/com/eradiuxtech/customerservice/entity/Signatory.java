@@ -19,6 +19,10 @@ import java.util.List;
 @NoArgsConstructor
 public class Signatory extends CoreEntity implements Serializable {
 
+    @ManyToOne(targetEntity = CorporateCustomer.class, optional = false)
+    @JoinColumn(referencedColumnName = "ucid", name = "ucid", nullable = false)
+    CorporateCustomer corporateCustomer;
+
     @Column(name = "title")
     String title;
 
@@ -35,11 +39,11 @@ public class Signatory extends CoreEntity implements Serializable {
     @JoinColumn(name = "signatory_class", referencedColumnName = "type")
     SignatoryClass signatoryClass;
 
-    @OneToMany(targetEntity = Address.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(targetEntity = CustomerAddress.class, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "signatory_id", referencedColumnName = "id")
-    private List<Address> addresses;
+    private List<CustomerAddress> addresses;
 
-    @OneToMany(targetEntity = Phone.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(targetEntity = CustomerPhone.class, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "phone_id", referencedColumnName = "id")
-    private List<Phone> phones;
+    private List<CustomerPhone> phones;
 }

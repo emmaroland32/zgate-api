@@ -20,7 +20,7 @@ public class CorporateCustomer extends CoreEntity implements Serializable {
     String companyName;
 
     @OneToOne(targetEntity = CorporateCustomerProperty.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn( referencedColumnName = "id", nullable = false)
+    @JoinColumn( referencedColumnName = "ucid", name = "ucid" ,nullable = false)
     private CorporateCustomerProperty corporateCustomerProperty;
 
 }

@@ -8,13 +8,17 @@ import lombok.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "addresses")
+@Table(name = "director_addresses")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class Address extends CoreEntity implements Serializable {
+public class DirectorAddress extends CoreEntity implements Serializable {
+
+    @ManyToOne(targetEntity = Director.class)
+    @JoinColumn(referencedColumnName = "id", nullable = false)
+    Director director;
 
     @ManyToOne(targetEntity = AddressType.class)
     @JoinColumn(referencedColumnName = "id")
