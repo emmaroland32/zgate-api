@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.NaturalId;
 
+import java.io.Serializable;
+
 
 @Entity
 @Table(name = "cities")
@@ -18,7 +20,7 @@ import org.hibernate.annotations.NaturalId;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class City extends CoreEntity {
+public class City extends CoreEntity implements Serializable {
     @Column(name = "name")
     @NotNull(message = "City name is required")
     protected String name;

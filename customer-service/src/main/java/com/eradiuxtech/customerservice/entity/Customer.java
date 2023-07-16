@@ -5,7 +5,6 @@ import com.eradiuxtech.customerservice.entity.core.Review;
 import com.eradiuxtech.customerservice.util.Status;
 import jakarta.persistence.*;
 import lombok.*;
-import org.glassfish.jersey.internal.util.Producer;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.ParamDef;
@@ -21,11 +20,12 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-@SQLDelete(sql = "UPDATE customers SET deleted = true WHERE id=?")
-@Filter(name = "deletedCustomerFilter", condition = "deleted = :isDeleted")
-@FilterDef(name = "deletedCustomerFilter", parameters = @ParamDef(name = "isDeleted", type = org.hibernate.type.descriptor.java.BooleanJavaType.class))
+//@EqualsAndHashCode(callSuper = true)
+//@SQLDelete(sql = "UPDATE customers SET deleted = true WHERE id=?")
+//@Filter(name = "deletedCustomerFilter", condition = "deleted = :isDeleted")
+//@FilterDef(name = "deletedCustomerFilter", parameters = @ParamDef(name = "isDeleted", type = org.hibernate.type.descriptor.java.BooleanJavaType.class))
 public class Customer extends Review implements Serializable {
+
     @Column(name = "ucid", updatable = false, nullable = false, unique = true)
     private Long ucid;
 
@@ -33,7 +33,7 @@ public class Customer extends Review implements Serializable {
     @JoinColumn( referencedColumnName = "id")
     private CustomerType customerType;
 
-    @OneToOne(mappedBy = "customer")
+    @OneToOne(mappedBy = "customer", fetch = FetchType.EAGER)
     private IndividualCustomerProperty individualCustomerProperty;
 
     @OneToOne(mappedBy = "customer", fetch = FetchType.EAGER)
@@ -42,20 +42,19 @@ public class Customer extends Review implements Serializable {
     @OneToOne(mappedBy = "customer", fetch = FetchType.EAGER)
     private CorporateCustomerProperty corporateCustomerProperty;
 
-    @OneToOne(targetEntity = RelationshipManager.class, fetch = FetchType.EAGER ,cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn( referencedColumnName = "id")
+    @OneToOne(mappedBy = "customer", fetch = FetchType.EAGER)
+    private MinorCustomerProperty minorCustomerProperty;
+
+    @OneToOne(mappedBy = "customer", fetch = FetchType.EAGER ,cascade = CascadeType.ALL, orphanRemoval = true)
     private RelationshipManager relationshipManager;
 
-    @OneToMany(targetEntity = Address.class, fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn( referencedColumnName = "id")
-    private List<Address> addresses;
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CustomerAddress> addresses;
 
-    @OneToMany(targetEntity = Phone.class,fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(referencedColumnName = "id")
-    private List<Phone> phones;
+    @OneToMany(mappedBy = "customer",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CustomerPhone> phones;
 
-    @OneToMany(targetEntity = NextOfKin.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn( referencedColumnName = "id")
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<NextOfKin> nextOfKins;
 
     @PrePersist

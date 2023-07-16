@@ -18,6 +18,10 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class Director extends CoreEntity implements Serializable {
 
+    @ManyToOne(targetEntity = CorporateCustomer.class, optional = false)
+    @JoinColumn(referencedColumnName = "ucid", name = "ucid", nullable = false)
+    CorporateCustomer corporateCustomer;
+
     @ManyToOne(targetEntity = Title.class)
     @JoinColumn(referencedColumnName = "id")
     Title title;

@@ -1,7 +1,6 @@
 package com.eradiuxtech.customerservice.entity;
 
 
-import com.eradiuxtech.customerservice.entity.Country;
 import com.eradiuxtech.customerservice.entity.core.CoreEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
