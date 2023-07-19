@@ -2,8 +2,8 @@ package com.eradiuxtech.zgate.userservice.entity;
 
 
 import com.eradiuxtech.zgate.userservice.entity.core.CoreEntity;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,17 +11,13 @@ import lombok.Setter;
 
 import java.io.Serializable;
 
-
 @Entity
-@Table(name = "users")
+@Table(name = "departments")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class User extends CoreEntity implements Serializable {
+public class Department extends CoreEntity implements Serializable {
 
-
-    String email;
-
-
+    String name;
 }

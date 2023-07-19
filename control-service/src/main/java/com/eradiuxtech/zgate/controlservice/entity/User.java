@@ -1,9 +1,8 @@
-package com.eradiuxtech.zgate.userservice.entity;
+package com.eradiuxtech.zgate.controlservice.entity;
 
 
-import com.eradiuxtech.zgate.userservice.entity.core.CoreEntity;
+import com.eradiuxtech.zgate.controlservice.entity.core.CoreEntity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

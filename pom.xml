@@ -23,6 +23,7 @@
         <module>customer-service</module>
         <module>user-service</module>
         <module>portfolio-service</module>
+        <module>control-service</module>
     </modules>
 
     <properties>
