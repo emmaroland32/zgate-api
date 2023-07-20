@@ -24,6 +24,10 @@
         <module>user-service</module>
         <module>portfolio-service</module>
         <module>control-service</module>
+        <module>compliance-service</module>
+        <module>system-service</module>
+        <module>audit-service</module>
+        <module>document-service</module>
     </modules>
 
     <properties>

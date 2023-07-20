@@ -138,36 +138,27 @@ services:
 #      - "5434:5434"
 #    restart: always
 
-  ## Keycloak Config with Mysql database
-  keycloak-mysql:
-    container_name: keycloak-mysql
-    image: mysql:latest
-    volumes:
-      - ./infrastructure/mysql_keycloak_data:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: keycloak
-      MYSQL_USER: keycloak
-      MYSQL_PASSWORD: password
 
-  keycloak:
-    container_name: keycloak
-    image: quay.io/keycloak/keycloak
-    command: [ "start-dev", "--import-realm" ]
-    environment:
-      DB_VENDOR: MYSQL
-      DB_ADDR: mysql
-      DB_DATABASE: keycloak
-      DB_USER: keycloak
-      DB_PASSWORD: password
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./infrastructure/realms/:/opt/keycloak/data/import/
-    depends_on:
-      - keycloak-mysql
+#    ## Keycloak Config
+#  keycloak:
+#    container_name: keycloak
+#    image: quay.io/keycloak/keycloak:22.0.1
+#    command: [ "start-dev", "--import-realm" ]
+#    environment:
+#      DB_VENDOR: postgres
+#      KC_DB_USERNAME: postgres
+#      KC_HOSTNAME: auth.eradiuxtech.com
+#      KC_DB_URL_HOST: 172.23.0.2
+#      KC_DB_PASSWORD: 123Password
+#      KEYCLOAK_ADMIN: admin
+#      KEYCLOAK_ADMIN_PASSWORD: admin
+#    ports:
+#      - "8080:8080"
+#    networks:
+#        - docker-network
+#    volumes:
+#      - ./infrastructure/keycloak/:/opt/keycloak/data/import/
+
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.0.1
@@ -203,9 +194,6 @@ services:
     ports:
       - "9411:9411"
 
-
-
-
   ## Prometheus
   prometheus:
     image: prom/prometheus:v2.37.1
@@ -234,3 +222,9 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=password
+
+networks:
+  docker-network:
+    driver: bridge
+
+
