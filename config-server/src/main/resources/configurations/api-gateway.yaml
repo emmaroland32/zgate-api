@@ -1,0 +1,139 @@
+server:
+  port: 8181
+  servlet:
+    context-path: /
+  profiles:
+    active:
+      - ${ACTIVE_SPRING_PROFILE:dev}
+
+
+#Eureka Config
+app:
+  eureka-server: localhost
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka:password@localhost:8761/eureka
+
+
+#Logging Config
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE
+  pattern:
+    level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
+
+
+#Management Endpoint
+management:
+  endpoint:
+    gateway:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+
+
+#API Gateway Config
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        -   id: customer-service
+            predicates:
+              - Path=/api/customer-service/**
+            uri: lb://customer-service
+
+        -   filters:
+              - SetPath=/
+            id: discovery-server
+            predicates:
+              - Path=/eureka/web
+            uri: http://eureka:password@${app.eureka-server}:8761
+
+        -   id: discovery-server-static
+            predicates:
+              - Path=/eureka/**
+            uri: http://eureka:password@${app.eureka-server}:8761
+
+        -   id: portfolio-service
+            predicates:
+              - Path=/api/portfolio-service/**
+            uri: lb://portfolio-service
+
+        -   id: notification-service
+            predicates:
+              - Path=/api/notification-service/**
+            uri: lb://notification-service
+
+        -   id: system-service
+            predicates:
+              - Path=/api/system-service/**
+            uri: lb://system-service
+
+        -   id: control-service
+            predicates:
+              - Path=/api/control-service/**
+            uri: lb://control-service
+
+        -   id: compliance-service
+            predicates:
+              - Path=/api/compliance-service/**
+            uri: lb://compliance-service
+
+        -   id: audit-service
+            predicates:
+              - Path=/api/audit-service/**
+            uri: lb://audit-service
+
+        -   id: document-service
+            predicates:
+              - Path=/api/document-service/**
+            uri: lb://document-service
+
+
+  #Resource Server and Security
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/zgate
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+
+
+# Spring DOC & Open API Config
+springdoc:
+  enable-native-support: true
+  api-docs:
+    enabled: true
+    path: /api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    config-url: /api-docs/swagger-config
+    operationsSorter: method
+    urls:
+      - url: /api-docs
+        name: API Gateway Service
+        primaryName: API Gateway Service
+      - url: /customer-service/api-docs
+        name: Customer Service
+        primaryName: Customer Service
+openapi:
+  service:
+    title: API Gateway
+    version: 1.0.0
+    description: Documentation for API Gateway
+    url: http://localhost:8181
+
