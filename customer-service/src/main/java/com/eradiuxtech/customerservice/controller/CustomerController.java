@@ -5,6 +5,7 @@ import com.eradiuxtech.customerservice.dto.request.CreateCustomerRequest;
 import com.eradiuxtech.customerservice.dto.response.CustomerResponseDto;
 import com.eradiuxtech.customerservice.service.CustomerService;
 import com.eradiuxtech.customerservice.util.Status;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.BadRequestException;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.Map;
 
 
@@ -25,6 +27,13 @@ public class CustomerController {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     private final CustomerService customerService;
+
+
+
+    @GetMapping("/health")
+    public String index(Principal principal) {
+        return principal.getName();
+    }
 
     @GetMapping()
     public ResponseEntity<Map<String, Object>> listWithPagination(
@@ -45,11 +54,7 @@ public class CustomerController {
     }
 
 
-    @GetMapping("/health")
-    public ResponseEntity<String> health(){
-        LOGGER.info("CustomerController | health | started");
-        return ResponseEntity.ok("Customer Service is up and running");
-    }
+
     @PostMapping("/create-customer")
     public ResponseEntity<String> createCustomer(@Valid @RequestBody CreateCustomerRequest createCustomerRequest){
 
