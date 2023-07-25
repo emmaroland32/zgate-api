@@ -31,4 +31,7 @@ public class CorporateCustomerProperty extends CoreEntity implements Serializabl
 
     @OneToOne(mappedBy = "corporateCustomerProperty", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private CorporateCustomer corporateCustomer;
+
+    @OneToMany(mappedBy = "corporateCustomerProperty", cascade = CascadeType.ALL)
+    private List<Signatory> signatories;
 }
