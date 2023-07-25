@@ -40,7 +40,6 @@ public class JointCustomer extends CoreEntity implements Serializable {
         if (this.jointId != null) {
             suffix = String.format("%07d", id);
             loginId = prefix + suffix;
-            loginId.toUpperCase();
         }
     }
 

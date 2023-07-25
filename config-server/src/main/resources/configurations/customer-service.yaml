@@ -35,22 +35,17 @@ spring:
     password: 123Password
     url: jdbc:postgresql://localhost:5432/zgate-customer
     username: postgres
+#    driver-class-name: ${POSTGRES_DRIVER:org.postgresql.Driver}
   jpa:
-    defer-datasource-initialization: true
+#    defer-datasource-initialization: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate:
         check_nullability: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
-        jdbc:
-          batch_size: 20
-          lob:
-            non_contextual_creation: true
         order_updates: true
-        validator:
-          apply_to_ddl: true
     show-sql: true
   sql:
     init:

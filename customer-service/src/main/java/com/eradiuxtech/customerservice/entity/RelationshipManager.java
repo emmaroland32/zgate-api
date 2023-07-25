@@ -13,7 +13,6 @@ import java.io.Serializable;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 public class RelationshipManager extends CoreEntity implements Serializable {
 
     @OneToOne(targetEntity = Customer.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -33,7 +32,6 @@ public class RelationshipManager extends CoreEntity implements Serializable {
     String phoneNumber;
 
     @ManyToOne(targetEntity = RelationshipManagerType.class)
-    @JoinColumn(referencedColumnName = "id")
     RelationshipManagerType relationshipManagerType;
 
     @Column(name = "comment")
