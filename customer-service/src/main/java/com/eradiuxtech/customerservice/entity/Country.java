@@ -22,14 +22,14 @@ import java.io.Serializable;
 public class Country extends CoreEntity implements Serializable {
 
     @Column(name = "name", unique = true)
-    protected String name;
+    private String name;
 
     @Column(name = "code", unique = true)
-    protected String code;
+    private String code;
 
     @Column(name = "phone_code", unique = true)
-    protected String phoneCode;
+    private String phoneCode;
 
     @Column(name = "description")
-    protected String description;
+    private String description;
 }

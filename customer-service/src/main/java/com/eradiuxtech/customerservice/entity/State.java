@@ -18,14 +18,14 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class State extends CoreEntity implements Serializable {
     @Column(name = "name")
-    protected String name;
+    private String name;
 
     @Column(name = "code")
-    protected String code;
+    private String code;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    protected Country country;
+    private Country country;
 
     @Column(name = "description")
-    protected String description;
+    private String description;
 }

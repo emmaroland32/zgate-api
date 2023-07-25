@@ -24,7 +24,6 @@ public class Director extends CoreEntity implements Serializable {
     CorporateCustomer corporateCustomer;
 
     @ManyToOne(targetEntity = Title.class)
-    @JoinColumn(referencedColumnName = "id")
     Title title;
 
     @Column(name = "first_name", unique = true)

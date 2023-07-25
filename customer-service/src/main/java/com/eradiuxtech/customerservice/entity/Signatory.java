@@ -19,12 +19,13 @@ import java.util.List;
 @NoArgsConstructor
 public class Signatory extends CoreEntity implements Serializable {
 
+    @ManyToOne(targetEntity = Title.class)
+    private Title title;
+
+
     @ManyToOne(targetEntity = CorporateCustomerProperty.class, optional = false)
     @JoinColumn(referencedColumnName = "ucid", name = "ucid", nullable = false)
     CorporateCustomerProperty corporateCustomerProperty;
-
-    @Column(name = "title")
-    String title;
 
     @Column(name = "first_name", nullable = false)
     String firstName;

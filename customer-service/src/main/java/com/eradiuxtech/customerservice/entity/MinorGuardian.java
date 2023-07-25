@@ -19,6 +19,9 @@ import java.util.List;
 @NoArgsConstructor
 public class MinorGuardian extends CoreEntity implements Serializable {
 
+    @ManyToOne(targetEntity = Title.class)
+    private Title title;
+
     @Column(name = "first_name")
     String firstName;
 

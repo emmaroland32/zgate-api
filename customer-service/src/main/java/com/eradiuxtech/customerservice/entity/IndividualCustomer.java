@@ -15,9 +15,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class IndividualCustomer extends CoreEntity implements Serializable {
 
-//    @ManyToOne(targetEntity = Title.class)
-//    @JoinColumn(referencedColumnName = "id")
-//    private Title title;
+    @ManyToOne(targetEntity = Title.class)
+    private Title title;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;

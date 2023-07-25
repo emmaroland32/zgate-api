@@ -18,6 +18,9 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class JointCustomer extends CoreEntity implements Serializable {
 
+    @ManyToOne(targetEntity = Title.class)
+    private Title title;
+
     @Column(name = "joint_id", nullable = false)
     Long jointId;
 
