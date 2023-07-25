@@ -28,8 +28,9 @@ public class CustomerPhone extends CoreEntity implements Serializable {
     @Column(name = "extension")
     String extension;
 
-    @Column(name = "country_code")
-    Country countryCode;
+    @ManyToOne(targetEntity = Country.class, optional = false)
+    @JoinColumn(nullable = false)
+    Country country;
 
     @Column(name = "area_code")
     String areaCode;

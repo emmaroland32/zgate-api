@@ -8,19 +8,17 @@ import lombok.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "customer_addresses")
+@Table(name = "minor_guardian_addresses")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustomerAddress extends CoreEntity implements Serializable {
+public class MinorGuardianAddress extends CoreEntity implements Serializable {
 
-    @ManyToOne(targetEntity = Customer.class)
-    @JoinColumn(referencedColumnName = "ucid", name = "ucid", nullable = false)
-    Customer customer;
+    @ManyToOne(targetEntity = MinorGuardian.class)
+    MinorGuardian minorGuardian;
 
     @ManyToOne(targetEntity = AddressType.class)
-    @JoinColumn(referencedColumnName = "id")
     AddressType addressType;
 
     @Column(name = "address_line_1")
@@ -30,11 +28,9 @@ public class CustomerAddress extends CoreEntity implements Serializable {
     String addressLine2;
 
     @ManyToOne(targetEntity = City.class)
-    @JoinColumn(referencedColumnName = "id")
     City city;
 
     @ManyToOne(targetEntity = State.class)
-    @JoinColumn( referencedColumnName = "id")
     State state;
 
     @Column(name = "zip")

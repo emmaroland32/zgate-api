@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "minor_guardians")
@@ -34,4 +35,9 @@ public class MinorGuardian extends CoreEntity implements Serializable {
     @JoinColumn( referencedColumnName = "id", nullable = false)
     private MinorGuardianProperty minorGuardianProperty;
 
+    @OneToMany(mappedBy = "minorGuardian", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MinorGuardianPhone> phones;
+
+    @OneToMany(mappedBy = "minorGuardian", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MinorGuardianAddress> addresses;
 }

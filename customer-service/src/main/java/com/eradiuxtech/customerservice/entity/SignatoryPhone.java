@@ -28,8 +28,8 @@ public class SignatoryPhone extends CoreEntity implements Serializable {
     @Column(name = "extension")
     String extension;
 
-    @Column(name = "country_code")
-    Country countryCode;
+    @ManyToOne(targetEntity = Country.class)
+    Country country;
 
     @Column(name = "area_code")
     String areaCode;

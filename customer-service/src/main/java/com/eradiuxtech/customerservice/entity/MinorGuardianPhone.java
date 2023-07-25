@@ -3,23 +3,27 @@ package com.eradiuxtech.customerservice.entity;
 
 import com.eradiuxtech.customerservice.entity.core.CoreEntity;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 
 @Entity
-@Table(name = "next_of_kin_phones")
+@Table(name = "minor_guardian_phones")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class NextOfKinPhone extends CoreEntity implements Serializable {
+public class MinorGuardianPhone extends CoreEntity implements Serializable {
 
-    @ManyToOne(targetEntity = NextOfKin.class, optional = false )
-    @JoinColumn(referencedColumnName = "id", nullable = false)
-    NextOfKin nextOfKin;
 
-    @ManyToOne(targetEntity = PhoneType.class, optional = false)
+    @ManyToOne(targetEntity = MinorGuardian.class)
+    MinorGuardian minorGuardian;
+
+
+    @ManyToOne(targetEntity = PhoneType.class)
     PhoneType phoneType;
 
     @Column(name = "number", unique = true)

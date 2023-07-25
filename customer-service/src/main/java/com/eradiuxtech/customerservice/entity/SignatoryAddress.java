@@ -42,7 +42,7 @@ public class SignatoryAddress extends CoreEntity implements Serializable {
 
     @ManyToOne(targetEntity = Country.class, optional = false)
     @JoinColumn(referencedColumnName = "id")
-    State country;
+    Country country;
 
     @Column(name = "comment")
     String comment;
