@@ -12,7 +12,7 @@ import java.util.Date;
 @Setter
 public class BaseEntity extends CoreEntity {
 
-    @Column(name = "deleted", columnDefinition = "Bit(1) default false")
+    @Column(name = "deleted", columnDefinition = "boolean default false")
     protected Boolean deleted = false;
 
     @Column(name = "deleted_at")

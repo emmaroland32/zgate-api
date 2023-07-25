@@ -1,0 +1,75 @@
+server:
+  servlet:
+    context-path: /
+  error:
+    include-binding-errors: never
+  port: 0
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka:password@localhost:8761/eureka
+  instance:
+    hostname: localhost
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    prefer-ip-address: true
+keycloak:
+  auth-server-url: http://localhost:8181
+  bearer-only: true
+  public-client: true
+  realm: master
+  resource: spring-boot-microservice-keycloak
+  ssl-required: external
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+
+spring:
+  application:
+    name: customer-service
+  datasource:
+    password: 123Password
+    url: jdbc:postgresql://localhost:5432/zgate-customer
+    username: postgres
+#    driver-class-name: ${POSTGRES_DRIVER:org.postgresql.Driver}
+  jpa:
+#    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        check_nullability: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        order_updates: true
+    show-sql: true
+  sql:
+    init:
+      mode: always
+
+
+  #Resource Server and Security
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/zgate
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+
+
+#Open API
+openapi:
+  service:
+    title: Customer Service #title that you will want to display in the swagger ui
+    version: 1.0.0
+    description: Docuentation for Customer Service API
+    url: http://localhost:8181 #api gateway url
+springdoc:
+  api-docs:
+    path: /customer-service/api-docs #these urls will used to load the swagger ui of this service by the api gateway
+  swagger-ui:
+    path: /customer-service/swagger-ui.html

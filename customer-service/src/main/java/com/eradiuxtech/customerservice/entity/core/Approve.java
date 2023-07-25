@@ -2,7 +2,7 @@ package com.eradiuxtech.customerservice.entity.core;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -34,7 +34,7 @@ public class Approve extends Reject {
             forApproval = true;
         }
     }
-    @PrePersist
+    @PreUpdate
     private void ApprovePrePersist() {
         if(approveNote == null && approvedBy != null && approvedAt != null && forApproval){
             approveNote = "Customer approved by " + approvedBy + " at " + approvedAt;

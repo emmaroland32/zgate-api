@@ -2,17 +2,15 @@ package com.eradiuxtech.customerservice.entity;
 
 
 import com.eradiuxtech.customerservice.entity.core.Review;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.Table;
-import lombok.*;
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.ParamDef;
-import org.hibernate.annotations.SQLDelete;
+import com.eradiuxtech.customerservice.util.Status;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
 
 
 @Entity
@@ -21,41 +19,47 @@ import java.io.Serializable;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-@SQLDelete(sql = "UPDATE customers SET deleted = true WHERE id=?")
-@Filter(name = "deletedCustomerFilter", condition = "deleted = :isDeleted")
-@FilterDef(name = "deletedCustomerFilter", parameters = @ParamDef(name = "isDeleted", type = org.hibernate.type.descriptor.java.BooleanJavaType.class))
+//@EqualsAndHashCode(callSuper = true)
+//@SQLDelete(sql = "UPDATE customers SET deleted = true WHERE id=?")
+//@Filter(name = "deletedCustomerFilter", condition = "deleted = :isDeleted")
+//@FilterDef(name = "deletedCustomerFilter", parameters = @ParamDef(name = "isDeleted", type = org.hibernate.type.descriptor.java.BooleanJavaType.class))
 public class Customer extends Review implements Serializable {
 
-    @Column(name = "first_name", nullable = false)
-    protected String firstName;
-
-    @Column(name = "last_name", nullable = false)
-    protected String lastName;
-
-    @Column(name = "email", nullable = false, unique = true)
-    protected String email;
-
-    @Column(name = "username", nullable = false, unique = true)
-    protected String username;
-
     @Column(name = "ucid", updatable = false, nullable = false, unique = true)
-    protected Long ucid;
+    private Long ucid;
 
-    @Column(name = "login_id", updatable = false, nullable = false, unique = true, length = 10)
-    protected String loginId;
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(nullable = false)
+    private CustomerType customerType;
 
-    @Column(name = "note")
-    protected String note;
+    @OneToOne(mappedBy = "customer")
+    private IndividualCustomerProperty individualCustomerProperty;
+
+    @OneToOne(mappedBy = "customer")
+    private JointCustomerProperty jointCustomerProperty;
+
+    @OneToOne(mappedBy = "customer")
+    private CorporateCustomerProperty corporateCustomerProperty;
+
+    @OneToOne(mappedBy = "customer", fetch = FetchType.EAGER)
+    private MinorCustomerProperty minorCustomerProperty;
+
+    @OneToOne(mappedBy = "customer", fetch = FetchType.EAGER ,cascade = CascadeType.ALL, orphanRemoval = true)
+    private RelationshipManager relationshipManager;
+
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CustomerAddress> addresses;
+
+    @OneToMany(mappedBy = "customer",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CustomerPhone> phones;
+
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<NextOfKin> nextOfKins;
 
     @PrePersist
-    private void PrePersist() {
-        username = username.toLowerCase();
-        email = email.toLowerCase();
-        loginId = loginId.toUpperCase();
-        if(note == null){
-            note = "Customer Created by " + createdBy + " at " + createdAt;
-        }
+    public void prePersist() {
+        this.setUcid(this.getId());
+        this.setStatus(Status.PENDING);
     }
 
 }

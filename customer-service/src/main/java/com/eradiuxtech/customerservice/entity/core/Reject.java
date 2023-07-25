@@ -2,10 +2,7 @@ package com.eradiuxtech.customerservice.entity.core;
 
 import com.eradiuxtech.customerservice.convertor.StatusConverter;
 import com.eradiuxtech.customerservice.util.Status;
-import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
-import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.PrePersist;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -39,7 +36,7 @@ public class Reject extends BaseEntity {
 
 
 
-    @PrePersist
+    @PreUpdate
     private void RejectionPrePersist() {
         if(rejectionNote == null && rejectedBy != null && rejectedAt != null){
             rejectedBy = "Reject by " + rejectedBy + " at " + rejectedAt;

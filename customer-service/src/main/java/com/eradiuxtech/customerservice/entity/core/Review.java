@@ -2,7 +2,7 @@ package com.eradiuxtech.customerservice.entity.core;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -34,13 +34,14 @@ public class Review extends Approve {
         }
     }
 
-    @PrePersist
+    @PreUpdate
     private void PrePersist() {
         if(reviewNote == null && reviewedBy != null && reviewedAt != null && forReview){
             reviewNote = "Customer reviewed by " + reviewedBy + " at " + reviewedAt;
         }
         if(reviewedBy != null && reviewedAt != null && forReview){
             isReviewed = true;
+            forApproval = true;
         }
     }
 
