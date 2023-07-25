@@ -29,7 +29,6 @@ public class Auditable {
 
     @CreatedDate
     @Column(name = "created_at",
-            nullable = false,
             updatable = false
            )
     @ColumnDefault("CURRENT_TIMESTAMP")
