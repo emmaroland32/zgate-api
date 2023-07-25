@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
 
 
 @Entity
@@ -46,14 +47,14 @@ public class Customer extends Review implements Serializable {
     @OneToOne(mappedBy = "customer", fetch = FetchType.EAGER ,cascade = CascadeType.ALL, orphanRemoval = true)
     private RelationshipManager relationshipManager;
 
-//    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<CustomerAddress> addresses;
-//
-//    @OneToMany(mappedBy = "customer",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<CustomerPhone> phones;
-//
-//    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<NextOfKin> nextOfKins;
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CustomerAddress> addresses;
+
+    @OneToMany(mappedBy = "customer",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CustomerPhone> phones;
+
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<NextOfKin> nextOfKins;
 
     @PrePersist
     public void prePersist() {
