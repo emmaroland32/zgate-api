@@ -24,6 +24,7 @@ public class State extends CoreEntity implements Serializable {
     private String code;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "country_id", referencedColumnName = "id")
     private Country country;
 
     @Column(name = "description")
