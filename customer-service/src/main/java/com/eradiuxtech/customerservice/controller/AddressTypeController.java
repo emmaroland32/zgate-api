@@ -2,9 +2,11 @@ package com.eradiuxtech.customerservice.controller;
 
 
 import com.eradiuxtech.customerservice.entity.AddressType;
-import com.eradiuxtech.customerservice.exception.NotFoundException;
+import com.eradiuxtech.customerservice.entity.City;
+import com.eradiuxtech.customerservice.exception.CustomNotFoundException;
 import com.eradiuxtech.customerservice.repository.AddressTypeRepository;
 import jakarta.validation.Valid;
+import jakarta.ws.rs.BadRequestException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +40,7 @@ public class AddressTypeController {
     public ResponseEntity<AddressType> getById(@PathVariable Long id) {
         return repository.findById(id)
                          .map(ResponseEntity::ok)
-                         .orElseThrow(() -> new NotFoundException("Address Type", id));
+                         .orElseThrow(() -> new CustomNotFoundException("Address Type", id));
     }
 
 
@@ -50,10 +52,31 @@ public class AddressTypeController {
         return new ResponseEntity<AddressType>(savedAddressType, HttpStatus.CREATED);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<AddressType> search(@RequestParam(required = false) String type, @RequestParam(required = false) String name) {
+        if(type.isEmpty() && name.isEmpty()) {
+            throw new BadRequestException("Provide Either code or name to search");
+        }
+        if(!type.isEmpty() && !name.isEmpty()) {
+            throw new BadRequestException("Provide Either code or name to search");
+        }
+
+        AddressType addressType = null;
+        if(!type.isEmpty()) {
+            addressType = repository.findByType(type);
+        }
+
+        if(!name.isEmpty()){
+            addressType = repository.findByName(name);
+        }
+
+        return ResponseEntity.ok(addressType);
+    }
+
 
     @PatchMapping("/{id}")
     public ResponseEntity<AddressType> update(@PathVariable Long id, @Valid @RequestBody AddressType addressType) {
-        AddressType existingAddressType = repository.findById(id).orElseThrow(() -> new NotFoundException("Address Type" ,id));
+        AddressType existingAddressType = repository.findById(id).orElseThrow(() -> new CustomNotFoundException("Address Type" ,id));
         if(addressType.getName() != null) {
             existingAddressType.setName(addressType.getName());
         }
@@ -70,7 +93,7 @@ public class AddressTypeController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
-        AddressType addressType = repository.findById(id).orElseThrow(() -> new NotFoundException("Address Type" ,id));
+        AddressType addressType = repository.findById(id).orElseThrow(() -> new CustomNotFoundException("Address Type" ,id));
         repository.delete(addressType);
         return ResponseEntity.ok().build();
     }
