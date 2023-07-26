@@ -27,7 +27,7 @@ public class AddressType extends CoreEntity implements Serializable {
     @Column(name = "type", unique = true)
     String type;
 
-    @Column(name = "comment")
-    String comment;
+    @Column(name = "description")
+    String description;
 
 }

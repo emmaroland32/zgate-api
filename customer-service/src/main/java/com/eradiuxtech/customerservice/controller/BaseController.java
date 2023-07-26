@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 
-@RestController
+@RestController("BaseController")
 @RequestMapping("/api/customer-service/")
 @RequiredArgsConstructor
 public class BaseController {
