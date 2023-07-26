@@ -1,4 +1,4 @@
-package com.eradiuxtech.customerservice.repository.read;
+package com.eradiuxtech.customerservice.repository;
 
 
 import org.springframework.data.domain.Page;
