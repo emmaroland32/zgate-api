@@ -16,7 +16,7 @@ import java.io.Serializable;
 public class RelationshipManager extends CoreEntity implements Serializable {
 
     @OneToOne(targetEntity = Customer.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn( referencedColumnName = "ucid", name = "ucid",nullable = false)
+    @JoinColumn( name = "ucid",nullable = false)
     private Customer customer;
 
     @Column(name = "first_name", unique = true)

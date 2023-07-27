@@ -20,8 +20,8 @@ import java.util.List;
 public class Director extends CoreEntity implements Serializable {
 
     @ManyToOne(targetEntity = CorporateCustomer.class, optional = false)
-    @JoinColumn(referencedColumnName = "ucid", name = "ucid", nullable = false)
-    CorporateCustomer corporateCustomer;
+    @JoinColumn( name = "ucid", nullable = false)
+    Customer customer;
 
     @ManyToOne(targetEntity = Title.class)
     Title title;

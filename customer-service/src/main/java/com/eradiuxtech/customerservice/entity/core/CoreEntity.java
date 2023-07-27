@@ -14,6 +14,6 @@ import lombok.Setter;
 public class CoreEntity extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long id;
+    public Long id;
 
 }

@@ -3,10 +3,12 @@ package com.eradiuxtech.customerservice.entity;
 
 import com.eradiuxtech.customerservice.entity.core.CoreEntity;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Entity
 @Table(name = "corporate_customers")
@@ -16,11 +18,28 @@ import java.util.List;
 @NoArgsConstructor
 public class CorporateCustomer extends CoreEntity implements Serializable {
 
-    @Column(name = "company_name", unique = true)
-    String companyName;
+    @Column(unique = true, nullable = false)
+    private String companyName;
 
-    @OneToOne(targetEntity = CorporateCustomerProperty.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn( referencedColumnName = "ucid", name = "ucid" ,nullable = false)
-    private CorporateCustomerProperty corporateCustomerProperty;
+    private String companyShortName;
+
+    @Column(unique = true, nullable = false)
+    private String companyEmail;
+
+    @Column(unique = true)
+    private String companyRegistrationNumber;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Country countryOfIncorporation;
+
+    @Column()
+    private String companyWebsite;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private CompanyType companyType;
+
+    @OneToOne(targetEntity = Customer.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn( referencedColumnName = "ucid" ,name = "ucid" ,nullable = false)
+    private Customer customer;
 
 }

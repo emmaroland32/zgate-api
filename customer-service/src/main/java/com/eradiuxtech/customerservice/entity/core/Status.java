@@ -1,15 +1,13 @@
-package com.eradiuxtech.customerservice.util;
+package com.eradiuxtech.customerservice.entity.core;
 
 
 
 public enum Status {
-        PENDING(),
+        PENDING,
+
+        PENDING_REVIEW,
         REVIEWED,
-        REVIEW,
-        APPROVE,
-        APPROVED,
-        FOR_REVIEW,
-        FOR_APPROVAL,
-        REJECT,
+        PENDING_APPROVAL,
+        ACTIVE,
         REJECTED,
 };

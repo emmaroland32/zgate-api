@@ -1,4 +1,4 @@
-package com.eradiuxtech.customerservice.entity;
+package com.eradiuxtech.customerservice.dto;
 
 public enum CustomerTypeEnum {
     individual,

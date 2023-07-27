@@ -1,7 +1,5 @@
 package com.eradiuxtech.customerservice.repository;
 
-import com.eradiuxtech.customerservice.entity.City;
-import com.eradiuxtech.customerservice.entity.Country;
 import com.eradiuxtech.customerservice.entity.State;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

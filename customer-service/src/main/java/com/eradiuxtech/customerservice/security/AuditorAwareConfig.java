@@ -4,18 +4,26 @@ package com.eradiuxtech.customerservice.security;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.AuditorAware;
+import org.springframework.security.core.Authentication;
 
-import java.security.Principal;
 import java.util.Optional;
 
 public class AuditorAwareConfig implements AuditorAware<String> {
+
     @Autowired
-    private HttpServletRequest request;
+    private IAuthenticationFacade authenticationFacade;
 
     @Override
     public Optional<String> getCurrentAuditor() {
 
-        return Optional.of("siyanda");
+        Authentication authentication = authenticationFacade.getAuthentication();
+
+        if(!authentication.isAuthenticated()){
+           throw new RuntimeException("User not authenticated");
+        }else{
+            return Optional.of(authentication.getName());
+        }
+
     }
 
 

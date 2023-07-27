@@ -13,13 +13,7 @@ eureka:
     hostname: localhost
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
     prefer-ip-address: true
-keycloak:
-  auth-server-url: http://localhost:8181
-  bearer-only: true
-  public-client: true
-  realm: master
-  resource: spring-boot-microservice-keycloak
-  ssl-required: external
+
 management:
   tracing:
     sampling:
@@ -39,7 +33,7 @@ spring:
   jpa:
 #    defer-datasource-initialization: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     properties:
       hibernate:
         check_nullability: true

@@ -34,13 +34,7 @@ public class MinorGuardian extends CoreEntity implements Serializable {
     @Column(name = "email")
     String email;
 
-    @OneToOne(targetEntity = MinorGuardianProperty.class, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = MinorCustomer.class, cascade = CascadeType.ALL)
     @JoinColumn( referencedColumnName = "id", nullable = false)
-    private MinorGuardianProperty minorGuardianProperty;
-
-    @OneToMany(mappedBy = "minorGuardian", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MinorGuardianPhone> phones;
-
-    @OneToMany(mappedBy = "minorGuardian", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MinorGuardianAddress> addresses;
+    private MinorCustomer minorCustomer;
 }

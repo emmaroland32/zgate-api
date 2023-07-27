@@ -1,6 +1,6 @@
 package com.eradiuxtech.customerservice.convertor;
 
-import com.eradiuxtech.customerservice.util.Status;
+import com.eradiuxtech.customerservice.entity.core.Status;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

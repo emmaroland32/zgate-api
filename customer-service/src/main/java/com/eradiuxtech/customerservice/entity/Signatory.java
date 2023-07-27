@@ -22,27 +22,27 @@ public class Signatory extends CoreEntity implements Serializable {
     @ManyToOne(targetEntity = Title.class)
     private Title title;
 
-
-    @ManyToOne(targetEntity = CorporateCustomerProperty.class, optional = false)
-    @JoinColumn(referencedColumnName = "ucid", name = "ucid", nullable = false)
-    CorporateCustomerProperty corporateCustomerProperty;
+    @ManyToOne(targetEntity = Customer.class, optional = false)
+    @JoinColumn( referencedColumnName = "ucid" ,name = "ucid", nullable = false)
+    private Customer customer;
 
     @Column(name = "first_name", nullable = false)
-    String firstName;
+    private String firstName;
 
     @Column(name = "last_name", nullable = false)
-    String lastName;
+   private String lastName;
 
     @Column(name = "email", unique = true)
-    String email;
+   private String email;
 
     @ManyToOne(targetEntity = SignatoryClass.class)
     @JoinColumn(name = "signatory_class", referencedColumnName = "type")
-    SignatoryClass signatoryClass;
+  private SignatoryClass signatoryClass;
 
     @OneToMany(targetEntity = SignatoryAddress.class, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SignatoryAddress> addresses;
 
     @OneToMany(targetEntity = SignatoryPhone.class, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SignatoryPhone> phones;
+
 }

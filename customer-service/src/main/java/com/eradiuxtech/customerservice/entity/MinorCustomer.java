@@ -30,8 +30,8 @@ public class MinorCustomer extends CoreEntity implements Serializable {
     @Column(name = "email", unique = true)
     String email;
 
-    @OneToOne(targetEntity = MinorCustomerProperty.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn( referencedColumnName = "ucid", name = "ucid" ,nullable = false)
-    private MinorCustomerProperty minorCustomerProperty;
+    @OneToOne(targetEntity = Customer.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(referencedColumnName = "ucid" ,name = "ucid" ,nullable = false)
+    private Customer customer;
 
 }

@@ -3,17 +3,20 @@ package com.eradiuxtech.customerservice.entity;
 
 import com.eradiuxtech.customerservice.entity.core.CoreEntity;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 
 @Entity
-@Table(name = "individual_customers")
+@Table(name = "joint_customer_holders")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class IndividualCustomer extends CoreEntity implements Serializable {
+public class JointCustomerHolder extends CoreEntity implements Serializable {
 
     @ManyToOne(targetEntity = Title.class)
     private Title title;
@@ -24,29 +27,25 @@ public class IndividualCustomer extends CoreEntity implements Serializable {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "middle_name")
     private String middleName;
 
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "username", nullable = false, unique = true)
-    private String username;
-
-    @Column(name = "login_id")
     private String loginId;
 
-    @OneToOne(targetEntity = Customer.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(referencedColumnName = "ucid" ,name = "ucid" ,nullable = false,unique = true)
+    private Long percentage;
+
+    @ManyToOne(targetEntity = Customer.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(referencedColumnName = "ucid" ,name = "ucid" ,nullable = false)
     private Customer customer;
 
-    @Column(name = "note")
-    private String note;
+    private String description;
 
     @PostPersist
     @PostUpdate
-    private void loginIdFormula() {
-        String prefix = "MD";
+    public void prePersist() {
+        String prefix = "MJ";
         String suffix = "";
         if (this.id != null) {
             suffix = String.format("%07d", id);
@@ -54,9 +53,4 @@ public class IndividualCustomer extends CoreEntity implements Serializable {
         }
     }
 
-    @PrePersist
-    private void PrePersist() {
-        username = username.toLowerCase();
-        email = email.toLowerCase();
-    }
 }
