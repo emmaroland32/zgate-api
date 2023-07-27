@@ -14,6 +14,7 @@ public class CreateJointRequestDto {
 
     private String description;
 
+    @NotNull(message = "Joint holders cannot be null")
    private List<CreateJointCustomerHolderRequestDto> jointHolders;
 
 }
