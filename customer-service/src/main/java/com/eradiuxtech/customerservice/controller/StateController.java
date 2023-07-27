@@ -21,14 +21,12 @@ public class StateController {
 
     private final StateRepository stateRepository;
     private final CountryRepository countryRepository;
-    private final CityRepository cityRepository;
 
     public StateController(StateRepository stateRepository, CountryRepository countryRepository,
                            CityRepository cityRepository
                           ) {
         this.stateRepository = stateRepository;
         this.countryRepository = countryRepository;
-        this.cityRepository = cityRepository;
     }
 
 

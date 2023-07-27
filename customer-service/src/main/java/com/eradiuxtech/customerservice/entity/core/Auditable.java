@@ -32,17 +32,17 @@ public class Auditable {
             updatable = false
            )
     @ColumnDefault("CURRENT_TIMESTAMP")
-    protected Date createdAt;
+    private Date createdAt;
 
     @LastModifiedDate
     @Column(name = "modified_at")
-    protected LocalDateTime modifiedAt;
+    private LocalDateTime modifiedAt;
 
     @CreatedBy
-    @Column(name = "created_by", columnDefinition = "varchar(255) default 'system'")
-    protected String createdBy;
+    @Column(name = "created_by")
+    private String createdBy;
 
     @LastModifiedBy
     @Column(name = "modified_by")
-    protected String modifiedBy;
+    private String modifiedBy;
 }

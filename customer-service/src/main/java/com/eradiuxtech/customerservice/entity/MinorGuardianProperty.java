@@ -25,6 +25,4 @@ public class MinorGuardianProperty extends CoreEntity implements Serializable {
     @JoinColumn( referencedColumnName = "ucid", name = "ucid",nullable = false)
     private MinorCustomerProperty minorCustomerProperty;
 
-    @OneToOne(mappedBy = "minorGuardianProperty", cascade = CascadeType.ALL)
-    private MinorGuardian guardian;
 }

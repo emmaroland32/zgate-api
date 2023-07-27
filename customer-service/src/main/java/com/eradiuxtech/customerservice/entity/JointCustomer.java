@@ -30,14 +30,13 @@ public class JointCustomer extends CoreEntity implements Serializable {
     @Column(name = "share")
     Long share;
 
-    @ManyToOne(targetEntity = JointCustomerProperty.class, optional = false)
-    @JoinColumn(referencedColumnName = "ucid", name = "ucid", nullable = false)
-    JointCustomerProperty jointCustomerProperty;
+    @ManyToOne(targetEntity = Customer.class, optional = false)
+    @JoinColumn( name = "ucid", nullable = false)
+    Customer customer;
 
     @PrePersist
     @PreUpdate
     public void prePersist() {
-
         String prefix = "JT";
         String suffix = "";
         if (this.jointId != null) {

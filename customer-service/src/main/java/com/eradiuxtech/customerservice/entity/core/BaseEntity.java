@@ -13,9 +13,9 @@ import java.util.Date;
 public class BaseEntity extends CoreEntity {
 
     @Column(name = "deleted", columnDefinition = "boolean default false")
-    protected Boolean deleted = false;
+    private Boolean deleted = false;
 
     @Column(name = "deleted_at")
-    protected Date deletedAt;
+    private Date deletedAt;
 
 }

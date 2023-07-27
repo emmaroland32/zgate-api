@@ -17,7 +17,7 @@ import java.util.List;
 public class NextOfKin extends CoreEntity implements Serializable {
 
     @ManyToOne(targetEntity = Customer.class, optional = false)
-    @JoinColumn(referencedColumnName = "ucid", name = "ucid", nullable = false)
+    @JoinColumn( name = "ucid", nullable = false)
     Customer customer;
 
     @Column(name = "first_name", unique = true)

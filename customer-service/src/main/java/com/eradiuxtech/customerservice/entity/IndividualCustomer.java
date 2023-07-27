@@ -33,23 +33,29 @@ public class IndividualCustomer extends CoreEntity implements Serializable {
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
-    @Column(name = "login_id", updatable = false, nullable = false, unique = true, length = 10)
+    @Column(name = "login_id")
     private String loginId;
 
-    @OneToOne(targetEntity = IndividualCustomerProperty.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(referencedColumnName = "ucid", name = "ucid" ,nullable = false)
-    private IndividualCustomerProperty individualCustomerProperty;
+    @OneToOne(targetEntity = Customer.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(referencedColumnName = "ucid" ,name = "ucid" ,nullable = false,unique = true)
+    private Customer customer;
 
     @Column(name = "note")
     private String note;
+
+    @PostPersist
+    private void loginIdFormular() {
+        String prefix = "MD";
+        String suffix = "";
+        if (this.id != null) {
+            suffix = String.format("%07d", id);
+            loginId = prefix + suffix;
+        }
+    }
 
     @PrePersist
     private void PrePersist() {
         username = username.toLowerCase();
         email = email.toLowerCase();
-        loginId = loginId.toUpperCase();
-        if(note == null){
-            note = "Customer Created by " + createdBy + " at " + createdAt;
-        }
     }
 }

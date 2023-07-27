@@ -16,7 +16,7 @@ import java.io.Serializable;
 public class SignatoryPhone extends CoreEntity implements Serializable {
 
     @ManyToOne(targetEntity = Signatory.class, optional = false )
-    @JoinColumn(referencedColumnName = "ucid", name = "ucid", nullable = false)
+    @JoinColumn(nullable = false)
     Signatory signatory;
 
     @ManyToOne(targetEntity = PhoneType.class, optional = false)

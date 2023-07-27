@@ -24,8 +24,8 @@ public class Signatory extends CoreEntity implements Serializable {
 
 
     @ManyToOne(targetEntity = CorporateCustomerProperty.class, optional = false)
-    @JoinColumn(referencedColumnName = "ucid", name = "ucid", nullable = false)
-    CorporateCustomerProperty corporateCustomerProperty;
+    @JoinColumn( name = "ucid", nullable = false)
+    Customer customer;
 
     @Column(name = "first_name", nullable = false)
     String firstName;

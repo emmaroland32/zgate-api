@@ -20,11 +20,8 @@ import java.util.List;
 public class MinorCustomerProperty extends CoreEntity implements Serializable {
 
     @OneToOne(targetEntity = Customer.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn( referencedColumnName = "ucid", name = "ucid" ,nullable = false)
+    @JoinColumn( name = "ucid" ,nullable = false)
     private Customer customer;
-
-    @OneToOne(mappedBy = "minorCustomerProperty", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private MinorCustomer minorCustomer;
 
     @OneToMany(mappedBy = "minorCustomerProperty", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<MinorGuardianProperty> minorGuardianProperties;

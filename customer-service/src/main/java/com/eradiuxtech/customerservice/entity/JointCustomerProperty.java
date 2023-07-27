@@ -29,10 +29,7 @@ public class JointCustomerProperty extends CoreEntity implements Serializable {
     private Boolean evenShare;
 
     @OneToOne(targetEntity = Customer.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn( referencedColumnName = "ucid", name = "ucid" ,nullable = false)
+    @JoinColumn( name = "ucid" ,nullable = false)
     private Customer customer;
-
-    @OneToMany( mappedBy = "jointCustomerProperty", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<JointCustomer> jointCustomers;
 
 }

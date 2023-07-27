@@ -36,7 +36,7 @@ public class MinorGuardian extends CoreEntity implements Serializable {
 
     @OneToOne(targetEntity = MinorGuardianProperty.class, cascade = CascadeType.ALL)
     @JoinColumn( referencedColumnName = "id", nullable = false)
-    private MinorGuardianProperty minorGuardianProperty;
+    private MinorCustomer minorCustomer;
 
     @OneToMany(mappedBy = "minorGuardian", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MinorGuardianPhone> phones;

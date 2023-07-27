@@ -23,7 +23,7 @@ public class SecurityConfig {
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity serverHttpSecurity) throws Exception {
 
         serverHttpSecurity
-                .csrf(crsf -> crsf.disable())
+                .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchange ->
                                            exchange.pathMatchers("/eureka/**").permitAll()
                                                    .pathMatchers("/actuator/**", "/","/logout.html").permitAll()
