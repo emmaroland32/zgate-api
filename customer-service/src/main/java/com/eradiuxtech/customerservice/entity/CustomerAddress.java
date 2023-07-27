@@ -16,7 +16,7 @@ import java.io.Serializable;
 public class CustomerAddress extends CoreEntity implements Serializable {
 
     @ManyToOne(targetEntity = Customer.class)
-    @JoinColumn(name = "ucid", nullable = false)
+    @JoinColumn(referencedColumnName = "ucid" ,name = "ucid", nullable = false)
     Customer customer;
 
     @ManyToOne(targetEntity = AddressType.class)

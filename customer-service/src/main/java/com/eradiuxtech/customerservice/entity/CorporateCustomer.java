@@ -18,8 +18,25 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class CorporateCustomer extends CoreEntity implements Serializable {
 
-    @Column(name = "company_name", unique = true)
-    String companyName;
+    @Column(unique = true, nullable = false)
+    private String companyName;
+
+    private String companyShortName;
+
+    @Column(unique = true, nullable = false)
+    private String companyEmail;
+
+    @Column(unique = true)
+    private String companyRegistrationNumber;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Country countryOfIncorporation;
+
+    @Column()
+    private String companyWebsite;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private CompanyType companyType;
 
     @OneToOne(targetEntity = Customer.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn( referencedColumnName = "ucid" ,name = "ucid" ,nullable = false)

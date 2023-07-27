@@ -31,7 +31,7 @@ public class MinorCustomer extends CoreEntity implements Serializable {
     String email;
 
     @OneToOne(targetEntity = Customer.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn( name = "ucid" ,nullable = false)
+    @JoinColumn(referencedColumnName = "ucid" ,name = "ucid" ,nullable = false)
     private Customer customer;
 
 }

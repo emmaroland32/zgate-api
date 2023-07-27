@@ -4,46 +4,44 @@ import com.eradiuxtech.customerservice.dto.CustomerTypeEnum;
 import com.eradiuxtech.customerservice.dto.request.*;
 import com.eradiuxtech.customerservice.dto.response.CustomerResponseDto;
 import com.eradiuxtech.customerservice.dto.response.FindCustomerResponseDto;
-import com.eradiuxtech.customerservice.entity.Customer;
-import com.eradiuxtech.customerservice.entity.CustomerType;
-import com.eradiuxtech.customerservice.entity.IndividualCustomer;
+import com.eradiuxtech.customerservice.entity.*;
 import com.eradiuxtech.customerservice.entity.core.Status;
 import com.eradiuxtech.customerservice.exception.CustomNotFoundException;
-import com.eradiuxtech.customerservice.repository.CustomerRepository;
-import com.eradiuxtech.customerservice.repository.CustomerTypeRepository;
-import com.eradiuxtech.customerservice.repository.IndividualCustomerRepository;
+import com.eradiuxtech.customerservice.repository.*;
 import com.eradiuxtech.customerservice.service.CustomerService;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 
 @Service
+@AllArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
+
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
+
 
     private final ModelMapper modelMapper;
 
+
     private final CustomerTypeRepository customerTypeRepository;
+
     private final CustomerRepository customerRepository;
+
 
     private final IndividualCustomerRepository individualCustomerRepository;
 
-    public CustomerServiceImpl(ModelMapper modelMapper, CustomerTypeRepository customerTypeRepository, CustomerRepository customerRepository, IndividualCustomerRepository individualCustomer, IndividualCustomerRepository individualCustomerRepository) {
-        this.modelMapper = modelMapper;
-        this.customerTypeRepository = customerTypeRepository;
-        this.customerRepository = customerRepository;
-        this.individualCustomerRepository = individualCustomerRepository;
-    }
+    private final JointCustomerRepository jointCustomerRepository;
 
-
-
+    private final JointCustomerHolderRepository jointCustomerHolderRepository;
 
 
     @Transactional
@@ -92,7 +90,52 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional
     @Override
     public Customer createJoint(CreateJointRequestDto customer) {
-        return null;
+        LOGGER.info("CustomerServiceImpl | createJoint | Started");
+        try {
+            Optional<CustomerType> customerType = customerTypeRepository.findById(1L);
+            if (customerType.isEmpty()) {
+                throw new CustomNotFoundException("CustomerType", 3L);
+            }
+
+            long Ucid = customerRepository.count() + 1;
+
+            Customer newCustomer = new Customer();
+            newCustomer.setUcid(Ucid);
+            newCustomer.setCustomerType(customerType.get());
+            LOGGER.info("CustomerServiceImpl | createJoint | customerTypeId | " + customerType.get().getId());
+
+            //Create Joint Customer
+            JointCustomer jointCustomer = new JointCustomer();
+            jointCustomer.setCustomer(newCustomer);
+            jointCustomer.setJointName(customer.getJointName());
+            jointCustomer.setDescription(customer.getDescription());
+
+            if(customer.getJointHolders().size() < 2) {
+                throw new RuntimeException("JointCustomerHolders must be at least 2");
+            }
+
+            if(Arrays.stream(customer.getJointHolders().stream().mapToDouble(CreateJointCustomerHolderRequestDto::getPercentage).toArray()).sum() != 100) {
+                throw new RuntimeException("Percentage Sum must be 100");
+            }
+
+            for(CreateJointCustomerHolderRequestDto jointCustomerHolderRequestDto : customer.getJointHolders()) {
+                JointCustomerHolder jointCustomerHolder = new JointCustomerHolder();
+                jointCustomerHolder.setCustomer(newCustomer);
+                jointCustomerHolder.setFirstName(jointCustomerHolderRequestDto.getFirstName());
+                jointCustomerHolder.setLastName(jointCustomerHolderRequestDto.getLastName());
+                jointCustomerHolder.setEmail(jointCustomerHolderRequestDto.getEmail());
+                jointCustomerHolder.setPercentage(jointCustomerHolderRequestDto.getPercentage());
+                jointCustomerHolderRepository.save(jointCustomerHolder);
+            }
+
+            jointCustomerRepository.save(jointCustomer);
+            Customer customerResponse = customerRepository.save(newCustomer);
+            LOGGER.info("CustomerServiceImpl | createJoint | Success");
+            return customerResponse;
+        } catch (Exception e) {
+            LOGGER.error("CustomerServiceImpl | createJoint | Exception : {}", e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 
 

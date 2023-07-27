@@ -18,31 +18,14 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class JointCustomer extends CoreEntity implements Serializable {
 
-    @ManyToOne(targetEntity = Title.class)
-    private Title title;
+    @Column(name = "joint_name", nullable = false)
+    private String jointName;
 
-    @Column(name = "joint_id", nullable = false)
-    Long jointId;
+    private String description;
 
-    @Column(name = "login_id", nullable = false)
-    String loginId;
+    @OneToOne(targetEntity = Customer.class, optional = false)
+    @JoinColumn( referencedColumnName = "ucid" ,name = "ucid", nullable = false, unique = true)
+   private Customer customer;
 
-    @Column(name = "share")
-    Long share;
-
-    @ManyToOne(targetEntity = Customer.class, optional = false)
-    @JoinColumn( name = "ucid", nullable = false)
-    Customer customer;
-
-    @PrePersist
-    @PreUpdate
-    public void prePersist() {
-        String prefix = "JT";
-        String suffix = "";
-        if (this.jointId != null) {
-            suffix = String.format("%07d", id);
-            loginId = prefix + suffix;
-        }
-    }
 
 }
