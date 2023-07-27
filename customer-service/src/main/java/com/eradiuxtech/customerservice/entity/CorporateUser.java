@@ -35,7 +35,7 @@ public class CorporateUser extends CoreEntity implements Serializable {
     private String loginId;
 
     @ManyToOne(targetEntity = Customer.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(referencedColumnName = "ucid" ,name = "ucid" ,nullable = false,unique = true)
+    @JoinColumn(referencedColumnName = "ucid" ,name = "ucid" ,nullable = false)
     private Customer customer;
 
     @Column(name = "note")

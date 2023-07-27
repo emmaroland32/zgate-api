@@ -25,24 +25,14 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
-
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
-
-
     private final ModelMapper modelMapper;
-
-
     private final CustomerTypeRepository customerTypeRepository;
-
     private final CustomerRepository customerRepository;
-
-
     private final IndividualCustomerRepository individualCustomerRepository;
-
+    private final CorporateCustomerRepository corporateCustomerRepository;
     private final JointCustomerRepository jointCustomerRepository;
-
     private final JointCustomerHolderRepository jointCustomerHolderRepository;
-
 
     @Transactional
     @Override
@@ -83,7 +73,39 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional
     @Override
     public Customer createCorporate(CreateCorporateRequestDto customer) {
-        return null;
+
+        LOGGER.info("CustomerServiceImpl | createCorporate | Started");
+        try {
+            Optional<CustomerType> customerType = customerTypeRepository.findById(2L);
+            if (customerType.isEmpty()) {
+                throw new CustomNotFoundException("CustomerType", 2L);
+            }
+
+            long Ucid = customerRepository.count() + 1;
+
+            Customer newCustomer = new Customer();
+            newCustomer.setUcid(Ucid);
+            newCustomer.setCustomerType(customerType.get());
+            LOGGER.info("CustomerServiceImpl | createCorporate | customerTypeId | " + customerType.get().getId());
+
+            //Create Corporate Customer
+            CorporateCustomer corporateCustomer = new CorporateCustomer();
+            corporateCustomer.setCustomer(newCustomer);
+            corporateCustomer.setCompanyName(customer.getCompanyName());
+            corporateCustomer.setCompanyEmail(customer.getCompanyEmail());
+            corporateCustomer.setCompanyShortName(customer.getCompanyShortName());
+            corporateCustomer.setCompanyRegistrationNumber(customer.getCompanyRegistrationNumber());
+            corporateCustomer.setCompanyWebsite(customer.getCompanyWebsite());
+            corporateCustomer.setCountryOfIncorporation(customer.getCountryOfIncorporation());
+
+            corporateCustomerRepository.save(corporateCustomer);
+            Customer customerResponse = customerRepository.save(newCustomer);
+            LOGGER.info("CustomerServiceImpl | createCorporate | Success");
+            return customerResponse;
+        } catch (Exception e) {
+            LOGGER.error("CustomerServiceImpl | createCorporate | Exception : {}", e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 
 
@@ -92,7 +114,7 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer createJoint(CreateJointRequestDto customer) {
         LOGGER.info("CustomerServiceImpl | createJoint | Started");
         try {
-            Optional<CustomerType> customerType = customerTypeRepository.findById(1L);
+            Optional<CustomerType> customerType = customerTypeRepository.findById(3L);
             if (customerType.isEmpty()) {
                 throw new CustomNotFoundException("CustomerType", 3L);
             }
@@ -115,7 +137,7 @@ public class CustomerServiceImpl implements CustomerService {
             }
 
             if(Arrays.stream(customer.getJointHolders().stream().mapToDouble(CreateJointCustomerHolderRequestDto::getPercentage).toArray()).sum() != 100) {
-                throw new RuntimeException("Percentage Sum must be 100");
+                throw new RuntimeException("JointHolders Percentage Sum must be 100");
             }
 
             for(CreateJointCustomerHolderRequestDto jointCustomerHolderRequestDto : customer.getJointHolders()) {

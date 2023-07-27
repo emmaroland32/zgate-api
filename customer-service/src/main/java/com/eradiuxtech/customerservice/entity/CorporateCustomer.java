@@ -29,13 +29,13 @@ public class CorporateCustomer extends CoreEntity implements Serializable {
     @Column(unique = true)
     private String companyRegistrationNumber;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne
     private Country countryOfIncorporation;
 
-    @Column()
+    @Column
     private String companyWebsite;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne
     private CompanyType companyType;
 
     @OneToOne(targetEntity = Customer.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
